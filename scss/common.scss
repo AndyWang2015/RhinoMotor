@@ -1,2 +1,741 @@
 @import "base.scss";
+$page_maxwidth:1550px;
+$page_maxwidth_in:990px;
+body{
+	background-color:#000000;
+}
+.top{
+	@include f(100%,88px);
+	box-shadow: 0 3px 3px rgba(0,0,0,0.8);
+	border-top:8px solid #000;
+	z-index: 99;
+	background-color: #FFF;
+	.topin{
+		position: relative;
+		width: 100%;
+		height:100%;
+		max-width: $page_maxwidth;
+		margin: auto;
+	}
+	.logo{
+		@include r(137px,88px);
+		background: url(../images/logo.jpg) no-repeat;
+		background-position: center;
+		background-color: #000;
+		a{
+			@include a;
+		}
+	}
+	.menu{
+		@include r(auto,100%);
+		.menuin{
+			@include r(auto,18px);
+			margin: 35px 0;
+			.menua{
+				width: auto;
+				height: 100%;
+				vertical-align: top;
+				display: inline-block;
+				margin: 0 15px;
+				a{
+					@include r(auto,100%);
+					@include font(15px,18px,#000000,normal,'Arial');
+					text-align: center;
+					&:hover{
+						color:#d30200;
+					}
+				}
+			}
+		}
+	}
+	.right{
+		@include a(auto,100%,auto);
+		right: 0;
+		.btn{
+			position: relative;
+			width: auto;
+			height: 28px;
+			margin-top: 30px;
+			display: inline-block;
+			vertical-align: top;
+			margin-left: 25px;
+			&:last-child{
+				margin-left: 0;
+			}
+			&.search{
+				&:hover{
+					input{
+						width: 150px;
+					}
+				}
+				.search_btn{
+					@include r(55px,100%);
+					background: url(../images/icon_search.png) no-repeat;
+					background-position: right center;
+					cursor: pointer;
+					margin-right: 10px;
+				}
+				input{
+					@include r(80px,100%);
+					@include font(15px,18px,#000000);
+					transition:0.3s;
+					box-sizing:border-box;
+					padding: 5px;					
+					&:focus{
+						border:1px solid #e8e8e8;
+					}
+				}				
+			}
+			&.member_btn{
+				@include font(15px,28px,#000000);
+				background: url(../images/icon_member.png) no-repeat;
+				background-position: left center;
+				text-indent: 25px;
+				cursor: pointer;
+			}
+			&.fb_btn{
+				width: 20px;
+				background: url(../images/icon_fb.png) no-repeat;
+				background-position: center;
+				cursor: pointer;
+				a{
+					@include a;
+				}
+			}
+			&.yahoo_btn{
+				width: 50px;
+				background: url(../images/icon_yahoo.png) no-repeat;
+				background-position: center;
+				cursor: pointer;
+				a{
+					@include a;
+				}
+			}
+		}
 
+	}
+}
+.menu_mobile{
+	@include f(100%,0,0,8px);	
+	z-index: 100;
+	display: none;
+	.menuin{
+		position: relative;
+		width: 100%;
+		height: 18px;
+		max-width: $page_maxwidth;
+		margin: 35px auto;
+		.menua{
+			width: auto;
+			height: 100%;
+			vertical-align: top;
+			display: inline-block;
+			margin: 0 15px;
+			&:first-child{
+				margin-left: 162px;
+			}
+			a{
+				@include r(auto,100%);
+				@include font(15px,18px,#000000,normal,'Arial');
+				text-align: center;
+				&:hover{
+					color:#d30200;
+				}
+			}
+		}
+	}
+}
+.wrapper{
+	@include r;
+	box-sizing:border-box;
+	padding-top: 96px;
+	.fixed_icon_yahoo{
+		@include f(auto,50px,auto,50%,0,-25px);		
+		right: 0;
+		z-index: 999;
+		&:before{
+			@include a(68px,100%,auto);
+			right: 0;
+			transition:0.3s;
+			content:"";
+			background: url(../images/fixed_icon_yahoo.png) no-repeat;
+			background-position: right center;
+		}
+		&:hover{
+			&:before{
+				right: -100%;
+			}
+			a{
+				width: 122px;
+				&:before{
+					right: 0;
+				}
+			}
+		}
+		a{
+			@include r(68px,100%);
+			&:before{
+				@include a(122px,100%,auto);
+				right: -122px;
+				content:"";
+				background: url(../images/fixed_icon_yahoo_hover.png) no-repeat;
+				background-position: center;
+				z-index: 0;
+				transition:0.3s;
+				// transition-delay:0.3s;
+			}
+		}
+	}
+	.sec_menu{
+		@include r;		
+		.sec_menuin{
+			width: 100%;
+			height: 60px;
+			max-width: $page_maxwidth;
+			margin: auto;
+			.title{
+				@include r(auto,100%);
+				@include font(22px,60px,#ffffff,bolder);
+				min-width: 137px;
+				text-align: center;
+			}
+			.menua{
+				@include r(auto,100%);
+				&:hover,&.on{
+					background-color: #d30200;
+				}
+				a{
+					@include r(auto,100%);
+					@include font(13px,60px,#ffffff,bolder);
+					min-width: 100px;
+					text-align: center;
+				}
+			}
+		}
+	}
+	.content{
+		@include r;
+		margin-top: 65px;
+		.press_content{
+			@include r;
+			.slide_show{
+				@include r;
+				.slide_showin{
+					position: relative;
+					width: $page_maxwidth_in;
+					height: 390px;
+					margin: auto;
+					.b_pic{
+						@include r(79%,100%);
+						margin-right: 1%;
+						transition:1s;
+						opacity: 1;
+						overflow: hidden;
+						img{
+							width: 100%;
+							display: inline-block;
+							vertical-align: middle;
+						}
+						&.off{
+							transition:0.3s;
+							opacity: 0;
+						}
+					}
+					.s_pic_box{
+						@include r(20%,100%);
+						overflow: hidden;
+						ul{
+							@include r(94%,auto);
+							margin: 0 6% 0 0%;
+							li{
+								@include r(100%,94px);
+								margin-bottom: 4%;								
+								.s_pic{
+									@include r(100%,100%);
+									overflow: hidden;
+									cursor: pointer;
+									&.on,&:hover{
+										&:before{
+											opacity: 1;
+										}
+									}
+									&:before{
+										content:"";
+										@include a;
+										box-sizing:border-box;
+										transition:0.3s;
+										border:3px solid #d30200;
+										opacity: 0;
+										z-index: 1;
+										pointer-events:none;
+									}
+									img{
+										width: 100%;
+										vertical-align: middle;
+										display: inline-block;
+										z-index: 0;
+									}
+								}								
+							}
+						}
+					}
+				}
+			}
+			.main_area{
+				@include r;
+				.main_areain{
+					position: relative;
+					width: $page_maxwidth_in;
+					margin: auto;
+				}
+				.main{
+					@include r;
+					background-color: #1e1e1e;
+					box-sizing:border-box;
+					padding: 30px;
+					.date{
+						@include r;
+						@include font(15px,15px,#999999,normal,'Arial');
+						letter-spacing: 2px;
+						padding-bottom: 25px;
+						margin-bottom: 23px;
+						&:before{
+							content:"";
+							@include a(66px,2px,0,auto);
+							background-color: #FFF;
+							bottom: 0;
+						}
+					}
+					.title{
+						@include r;
+						@include font(26px,36px,#87bace,bolder);
+						margin-bottom: 23px;
+						letter-spacing: 1px;
+					}
+					.word{
+						@include r;
+						@include font(15px,27px,#ffffff);
+						margin-bottom: 50px;
+					}
+				}
+				.btn_bottom{
+					@include r;
+					.btn_bottomin{
+						position: relative;
+						width:$page_maxwidth_in;
+						margin: auto;
+						.btn{
+							@include r(auto,100%);
+							float: right;
+							a{
+								@include r;
+								img{vertical-align: top;display: inline-block;}
+								&:hover{
+									opacity: 0.8;
+								}
+							}
+						}
+					}
+				}
+			}
+			.interested_area{
+				@include r;
+				margin-top: 80px;
+				.interested_areain{
+					position: relative;
+					width: 100%;
+					max-width: $page_maxwidth;
+					margin: auto;
+					.title{
+						@include r;
+						@include font(18px,24px,#87bace,normal,'Arial');
+						text-align: center;
+						margin-bottom: 50px;
+					}
+					.box{
+						@include r;
+						.n{
+							@include r(32%);							
+							margin-right: 2%;
+							box-sizing:border-box;
+							vertical-align: top;
+							padding: 30px;
+							background-color: #1e1e1e;
+							&:nth-child(3n){
+								margin-right: 0;
+							}
+							a{
+								@include r;
+								&:hover{
+									.pic{
+										img{
+											@include transform(scale(1));
+											opacity: 1;
+										}										
+									}
+								}
+								.pic{
+									@include r(100%,240px);
+									margin-bottom: 25px;
+									background-color: #000;
+									overflow: hidden;									
+									&:before{
+										content:"";
+										width: 0.1%;
+										height: 100%;
+										display: inline-block;
+										vertical-align: middle;
+									}
+									img{
+										width: 99.9%;
+										height: auto;
+										display: inline-block;
+										vertical-align: middle;
+										transition:0.3s;
+										@include transform(scale(1.1));
+										opacity: 0.5;
+									}
+								}
+								.date{
+									@include r;
+									@include font(15px,18px,#999999);
+									padding-bottom: 25px;
+									margin-bottom: 23px;
+									&:before{
+										content:"";
+										@include a(66px,2px,0,auto);
+										bottom: 0;
+										background-color: #FFF;
+									}
+								}
+								.t{
+									@include r;
+									@include font(22px,28px,#87bace,bolder);
+									margin-bottom: 23px;
+								}
+								.w{
+									@include r;
+									@include font(13px,24px,#ffffff);
+									margin-bottom: 35px;
+								}
+								.more{
+									@include r(150px,30px);
+									@include font(15px,30px,#ffffff);
+									box-sizing:border-box;
+									border:1px solid #fff;
+									text-align: center;
+									cursor: pointer;
+								}
+							}
+							
+						}
+					}
+				}
+			}
+		}
+	}
+}
+.footer{
+	@include r;
+	margin-top: 100px;
+	.contact{
+		@include r;
+		.left{
+			@include r(100%,520px);			
+			background: url(../images/contact_pic.jpg) no-repeat;
+			background-position: left center;
+			background-color: #1e1e1e;
+			z-index: 0;
+			.pic{
+				@include a(215px,100px,45px,140px);
+				background: url(../images/contact_word.png) no-repeat;
+				background-position: center;
+				z-index: 1;
+			}
+		}
+		.right{
+			@include a(1024px,100%,auto);
+			box-sizing:border-box;
+			padding: 60px;
+			right: 0;
+			z-index: 9;
+			background-color: #1e1e1e;
+			.main{
+				@include r(100%,390px);
+				.lt{
+					@include r(340px,100%);
+					margin-right: 15px;
+					.fb_box{
+						@include r;
+						margin-bottom: 14px;
+						.fb-page{
+							@include r;
+						}
+					}
+					.user_data{
+						@include r;
+						opacity: 0.7;
+						input{
+							@include font(14px,45px,#ffffff);
+							@include r(100%,45px);
+							margin-bottom: 14px;
+							border-radius:5px;
+							background-color: #3b3b3b;
+							text-align: center;
+							&.user_addr{margin-bottom: 0;}
+							&.user_name{width: 49%;margin-right: 2%;}
+							&.user_phone{width: 49%;}
+						}
+					}
+				}
+				.rt{
+					@include r(470px,100%);
+					opacity: 0.7;
+					.message{
+						@include r(100%,270px);
+						@include font(14px,24px,#ffffff);
+						@include border-radius(5px);
+						box-sizing:border-box;
+						padding: 15px;
+						background-color: #3b3b3b;
+						margin-bottom: 15px;
+						border:0;
+						outline: none !important;
+					}
+					.send_btn{
+						@include r(100%,95px);
+						@include border-radius(5px);
+						cursor: pointer;
+						box-sizing:border-box;
+						border:3px solid #fff;
+						text-align: center;
+						span{
+							@include a;
+							@include font(18px,95px,#ffffff,bolder,'Arial');
+							z-index: 1;
+						}
+						&:before{
+							content:"";
+							@include a;
+							z-index: 0;
+							background-color: #fff;
+							opacity: 0;
+							transition:0.3s;
+						}
+						&:hover{
+							&:before{opacity: 1;}
+							span{color:#000;}
+						}
+					}
+				}
+			}
+		}
+	}
+	.footerin{
+		@include r(100%,80px);
+		@include font(15px,20px,#000000);
+		background-color: #ffffff;		
+		box-sizing:border-box;
+		padding: 30px 45px;	
+	}
+}
+@media screen and (max-width: 1280px) {
+	.footer{
+		@include r;
+		margin-top: 100px;
+		.contact{
+			@include r;
+			.left{
+				@include r(100%,520px);			
+				background: url(../images/contact_pic.jpg) no-repeat;
+				background-position: left center;
+				background-color: #1e1e1e;
+				z-index: 0;
+				.pic{
+					@include a(215px,100px,45px,140px);
+					background: url(../images/contact_word.png) no-repeat;
+					background-position: center;
+					z-index: 1;
+				}
+			}
+			.right{
+				@include a(890px,100%,auto);
+				box-sizing:border-box;
+				padding: 60px 30px 60px 30px;
+				right: 0;
+				z-index: 9;
+				background-color: #1e1e1e;
+				.main{
+					@include r(100%,390px);
+					.lt{
+						@include r(340px,100%);
+						margin-right: 15px;
+						.fb_box{
+							@include r;
+							margin-bottom: 14px;
+							.fb-page{
+								@include r;
+							}
+						}
+						.user_data{
+							@include r;
+							opacity: 0.7;
+							input{
+								@include font(14px,45px,#ffffff);
+								@include r(100%,45px);
+								margin-bottom: 14px;
+								border-radius:5px;
+								background-color: #3b3b3b;
+								text-align: center;
+								&.user_addr{margin-bottom: 0;}
+								&.user_name{width: 49%;margin-right: 2%;}
+								&.user_phone{width: 49%;}
+							}
+						}
+					}
+					.rt{
+						@include r(470px,100%);
+						opacity: 0.7;
+						.message{
+							@include r(100%,270px);
+							@include font(14px,24px,#ffffff);
+							@include border-radius(5px);
+							box-sizing:border-box;
+							padding: 15px;
+							background-color: #3b3b3b;
+							margin-bottom: 15px;
+							border:0;
+							outline: none !important;
+						}
+						.send_btn{
+							@include r(100%,95px);
+							@include border-radius(5px);
+							cursor: pointer;
+							box-sizing:border-box;
+							border:3px solid #fff;
+							text-align: center;
+							span{
+								@include a;
+								@include font(18px,95px,#ffffff,bolder,'Arial');
+								z-index: 1;
+							}
+							&:before{
+								content:"";
+								@include a;
+								z-index: 0;
+								background-color: #fff;
+								opacity: 0;
+								transition:0.3s;
+							}
+							&:hover{
+								&:before{opacity: 1;}
+								span{color:#000;}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+@media screen and (max-width: 1024px) {
+	.footer{
+		@include r;
+		margin-top: 100px;
+		.contact{
+			@include r;
+			.left{
+				@include r(100%,520px);			
+				background: url(../images/contact_pic.jpg) no-repeat;
+				background-position: left center;
+				background-color: #1e1e1e;
+				z-index: 0;
+				.pic{
+					@include a(215px,100px,45px,140px);
+					background: url(../images/contact_word.png) no-repeat;
+					background-position: center;
+					z-index: 1;
+				}
+			}
+			.right{
+				@include a(1024px,100%,auto);
+				box-sizing:border-box;
+				padding: 60px;
+				right: 0;
+				z-index: 9;
+				background-color: #1e1e1e;
+				.main{
+					@include r(100%,390px);
+					.lt{
+						@include r(340px,100%);
+						margin-right: 15px;
+						.fb_box{
+							@include r;
+							margin-bottom: 14px;
+							.fb-page{
+								@include r;
+							}
+						}
+						.user_data{
+							@include r;
+							opacity: 0.7;
+							input{
+								@include font(14px,45px,#ffffff);
+								@include r(100%,45px);
+								margin-bottom: 14px;
+								border-radius:5px;
+								background-color: #3b3b3b;
+								text-align: center;
+								&.user_addr{margin-bottom: 0;}
+								&.user_name{width: 49%;margin-right: 2%;}
+								&.user_phone{width: 49%;}
+							}
+						}
+					}
+					.rt{
+						@include r(470px,100%);
+						opacity: 0.7;
+						.message{
+							@include r(100%,270px);
+							@include font(14px,24px,#ffffff);
+							@include border-radius(5px);
+							box-sizing:border-box;
+							padding: 15px;
+							background-color: #3b3b3b;
+							margin-bottom: 15px;
+							border:0;
+							outline: none !important;
+						}
+						.send_btn{
+							@include r(100%,95px);
+							@include border-radius(5px);
+							cursor: pointer;
+							box-sizing:border-box;
+							border:3px solid #fff;
+							text-align: center;
+							span{
+								@include a;
+								@include font(18px,95px,#ffffff,bolder,'Arial');
+								z-index: 1;
+							}
+							&:before{
+								content:"";
+								@include a;
+								z-index: 0;
+								background-color: #fff;
+								opacity: 0;
+								transition:0.3s;
+							}
+							&:hover{
+								&:before{opacity: 1;}
+								span{color:#000;}
+							}
+						}
+					}
+				}
+			}
+		}		
+	}
+}
+@media screen and (max-width: 640px) {
+}

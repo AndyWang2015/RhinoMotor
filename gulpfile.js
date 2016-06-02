@@ -30,7 +30,7 @@ gulp.task('js',function(){
 });
 gulp.task('connect', function() {
   $.connect.server({
-  	root: 'D:/yihsien/201604/20160400_test/andy_test/andy/',
+  	root: 'D:/yihsien/case/20160520_RhinoMotor/RhinoMotor/andy/',
   	livereload: true
   });
 });
