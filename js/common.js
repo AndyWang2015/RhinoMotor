@@ -4,7 +4,6 @@ $(document).ready(function(){
 	webData.wrp=$('.wrapper');
 
 	//Init
-	
   	
   	//AddListener  	
   	$('.slide_show').each(slide_showfc);  	
