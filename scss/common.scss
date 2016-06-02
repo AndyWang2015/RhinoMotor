@@ -535,8 +535,9 @@ body{
 		}
 	}
 	.footerin{
-		@include r(100%,80px);
+		@include r(100%,88px);
 		@include font(15px,20px,#000000);
+		border-bottom:8px solid #000;
 		background-color: #ffffff;		
 		box-sizing:border-box;
 		padding: 30px 45px;	
