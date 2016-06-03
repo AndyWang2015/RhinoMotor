@@ -402,9 +402,11 @@ body{
 									}
 								}
 								.pic{
-									@include r(100%,240px);
+									@include r(100%,0);
 									margin-bottom: 25px;
 									background-color: #000;
+									box-sizing:border-box;
+									padding-bottom: 60%;
 									overflow: hidden;									
 									&:before{
 										content:"";
@@ -596,7 +598,193 @@ body{
 					}
 				}
 			}
-			
+			.cars_brief{
+				@include r;
+				.cars_briefin{
+					position: relative;
+					width: 100%;
+					max-width: $page_maxwidth;
+					margin: auto;
+					.lt{
+						@include r;
+						box-sizing:border-box;
+						padding-right: 510px;
+						z-index: 1;
+						.cars_width{
+							@include r(46%);
+							margin-right: 3%;
+							margin-left: 2%;
+							.t{
+								@include r;
+								@include font(18px,20px,#ffffff,bolder);
+								text-align: left;
+								margin-top: 50px;
+							}
+							.item{
+								@include r(100%,500px);
+								margin-top: 25px;
+								overflow: hidden;								
+								.itemin{
+									@include r;	
+									box-sizing:border-box;
+									padding-right: 20px;								
+								}
+								span{
+									@include r;
+									@include font(13px,20px,rgba(255,255,255,0.7));
+									letter-spacing: 1px;
+									text-align: left;
+									box-sizing:border-box;
+									padding-left: 20px;
+									&:before{
+										content:"";
+										@include a(10px,10px,0,5px);
+										background-color: #d30200;
+										z-index: 9;
+									}
+								}
+							}
+						}
+						.cars_des{
+							@include r(49%);					
+							.t{
+								@include r;
+								@include font(18px,20px,#ffffff,bolder);
+								text-align: left;
+								margin-top: 50px;
+							}
+							.w{
+								@include r(100%,500px);
+								@include font(13px,24px,rgba(255,255,255,0.7));
+								margin-top: 25px;
+								overflow: hidden;								
+								.win{
+									@include r;
+									box-sizing:border-box;
+									padding-right: 20px;									
+								}
+							}
+						}
+					}
+					.rt{
+						@include a(480px,100%,auto);
+						right: 0;
+						z-index: 9;
+						.t{
+							@include r;
+							@include font(18px,20px,#ffffff,bolder);
+							text-align: left;
+							margin-top: 50px;
+						}
+						.fb_comment_box{
+							@include r(100%,500px);
+							overflow: hidden;
+						}
+					}
+				}
+			}
+			.interested_area{
+				@include r;
+				margin-top: 80px;
+				.interested_areain{
+					position: relative;
+					width: 100%;
+					max-width: $page_maxwidth;
+					margin: auto;
+					.title{
+						@include r;
+						@include font(18px,24px,#87bace,normal,'Arial');
+						text-align: center;
+						margin-bottom: 50px;
+					}
+					.box{
+						@include r;
+						.n{							
+							@include r(23.5%);							
+							margin-right: 2%;
+							margin-bottom: 2%;
+							&:nth-child(4n){
+								margin-right: 0;
+							}
+							a{
+								@include r;
+								&:hover{
+									.pic{
+										img{
+											@include transform(scale(1));
+											opacity: 1;
+										}										
+									}
+								}
+								.pic{
+									@include r(100%,0);
+									box-sizing:border-box;
+									padding-bottom: 66.6%;
+									margin-bottom: 25px;
+									background-color: #1e1e1e;
+									overflow: hidden;									
+									&:before{
+										content:"";
+										width: 0.1%;
+										height: 100%;
+										display: inline-block;
+										vertical-align: middle;
+									}
+									img{
+										width: 99.9%;
+										height: auto;
+										display: inline-block;
+										vertical-align: middle;
+										transition:0.3s;
+										@include transform(scale(1.1));
+										opacity: 0.5;
+									}
+								}
+								.word{
+									@include r;
+									box-sizing:border-box;
+									padding-left: 30px;
+									background: url(../images/cars_content_title_icon_s.png) no-repeat;
+									background-position: 15px 5px;
+									.t{
+										@include r;
+										@include font(18px,24px,#ffffff);
+										letter-spacing: 1px;
+									}
+									.price{
+										@include r;
+										@include font(15px,24px,#ffffff);
+										box-sizing:border-box;
+										padding-left: 45px;
+										text-align: left;
+										&:before{
+											content:"售價 :";
+											@include a(45px,100%);
+											@include font(15px,24px,#ffffff);
+											z-index: 9;
+											text-align: left;
+										}
+									}
+									.date{
+										@include r;
+										@include font(15px,24px,#ffffff);
+										box-sizing:border-box;
+										padding-left: 45px;
+										text-align: left;
+										&:before{
+											content:"日期 :";
+											@include a(45px,100%);
+											@include font(15px,24px,#ffffff);
+											z-index: 9;
+											text-align: left;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 }
