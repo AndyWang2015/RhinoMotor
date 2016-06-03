@@ -152,7 +152,7 @@ body{
 	@include r;
 	box-sizing:border-box;
 	padding-top: 156px;
-	&.index{
+	&.index,&.about,&.service,&.cars_content{
 		padding-top: 96px;
 	}
 	.fixed_icon_yahoo{
@@ -194,7 +194,7 @@ body{
 	}
 	.sec_menu{
 		@include f(100%,60px,0,96px);
-		background-color: #000;
+		background-color: rgba(0,0,0,0.75);
 		z-index: 99;		
 		.sec_menuin{
 			width: 100%;
@@ -216,6 +216,8 @@ body{
 					@include r(auto,100%);
 					@include font(13px,60px,#ffffff,bolder);
 					min-width: 100px;
+					box-sizing:border-box;
+					padding: 0 15px;
 					text-align: center;
 				}
 			}
@@ -223,7 +225,7 @@ body{
 	}
 	.content{
 		@include r;
-		margin-top: 65px;		
+		margin-top: 60px;		
 		.press_content{
 			@include r;
 			.slide_show{
@@ -372,6 +374,8 @@ body{
 					position: relative;
 					width: 100%;
 					max-width: $page_maxwidth;
+					box-sizing:border-box;
+					padding: 0 25px;
 					margin: auto;
 					.title{
 						@include r;
@@ -455,8 +459,7 @@ body{
 									text-align: center;
 									cursor: pointer;
 								}
-							}
-							
+							}							
 						}
 					}
 				}
@@ -690,6 +693,8 @@ body{
 					position: relative;
 					width: 100%;
 					max-width: $page_maxwidth;
+					box-sizing:border-box;
+					padding: 0 25px;
 					margin: auto;
 					.title{
 						@include r;
@@ -699,7 +704,7 @@ body{
 					}
 					.box{
 						@include r;
-						.n{							
+						.n{
 							@include r(23.5%);							
 							margin-right: 2%;
 							margin-bottom: 2%;
@@ -778,6 +783,405 @@ body{
 											z-index: 9;
 											text-align: left;
 										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		.cars_list{
+			@include r;
+			.cars_listin{
+				position: relative;
+				width: 100%;
+				max-width: $page_maxwidth;
+				box-sizing:border-box;
+				padding: 0 25px;
+				margin: auto;
+				.n{
+					@include r(23.5%);							
+					margin-right: 2%;
+					margin-bottom: 2%;
+					&:nth-child(4n){
+						margin-right: 0;
+					}
+					a{
+						@include r;
+						&:hover{
+							.pic{
+								img{
+									@include transform(scale(1));
+									opacity: 1;
+								}										
+							}
+							.word{
+								.t{color:#87bace;}
+								.price{color:#87bace;&:before{color:#87bace;}}
+								.date{color:#87bace;&:before{color:#87bace;}}
+							}
+						}
+						.pic{
+							@include r(100%,0);
+							box-sizing:border-box;
+							padding-bottom: 66.6%;
+							margin-bottom: 25px;
+							background-color: #1e1e1e;
+							overflow: hidden;									
+							&:before{
+								content:"";
+								width: 0.1%;
+								height: 100%;
+								display: inline-block;
+								vertical-align: middle;
+							}
+							img{
+								width: 99.9%;
+								height: auto;
+								display: inline-block;
+								vertical-align: middle;
+								transition:0.3s;
+								@include transform(scale(1.1));
+								opacity: 0.5;
+							}
+						}
+						.word{
+							@include r;
+							box-sizing:border-box;
+							padding-left: 30px;
+							background: url(../images/cars_content_title_icon_s.png) no-repeat;
+							background-position: 15px 5px;
+							.t{
+								@include r;
+								@include font(18px,24px,#ffffff);
+								letter-spacing: 1px;
+							}
+							.price{
+								@include r;
+								@include font(15px,24px,#ffffff);
+								box-sizing:border-box;
+								padding-left: 45px;
+								text-align: left;
+								&:before{
+									content:"售價 :";
+									@include a(45px,100%);
+									@include font(15px,24px,#ffffff);
+									z-index: 9;
+									text-align: left;
+								}
+							}
+							.date{
+								@include r;
+								@include font(15px,24px,#ffffff);
+								box-sizing:border-box;
+								padding-left: 45px;
+								text-align: left;
+								&:before{
+									content:"日期 :";
+									@include a(45px,100%);
+									@include font(15px,24px,#ffffff);
+									z-index: 9;
+									text-align: left;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		.press_list{
+			@include r;
+			.press_listin{
+				position: relative;
+				width: 100%;
+				max-width: $page_maxwidth;
+				box-sizing:border-box;
+				padding: 0 25px;
+				margin: auto;
+				.n{
+					@include r(32%);							
+					margin-right: 2%;
+					margin-bottom: 4%;
+					box-sizing:border-box;
+					vertical-align: top;
+					padding: 30px;
+					background-color: #1e1e1e;
+					&:nth-child(3n){
+						margin-right: 0;
+					}
+					a{
+						@include r;
+						&:hover{
+							.pic{
+								img{
+									@include transform(scale(1));
+									opacity: 1;
+								}										
+							}
+						}
+						.pic{
+							@include r(100%,0);
+							margin-bottom: 25px;
+							background-color: #000;
+							box-sizing:border-box;
+							padding-bottom: 60%;
+							overflow: hidden;									
+							&:before{
+								content:"";
+								width: 0.1%;
+								height: 100%;
+								display: inline-block;
+								vertical-align: middle;
+							}
+							img{
+								width: 99.9%;
+								height: auto;
+								display: inline-block;
+								vertical-align: middle;
+								transition:0.3s;
+								@include transform(scale(1.1));
+								opacity: 0.5;
+							}
+						}
+						.date{
+							@include r;
+							@include font(15px,18px,#999999);
+							padding-bottom: 25px;
+							margin-bottom: 23px;
+							&:before{
+								content:"";
+								@include a(66px,2px,0,auto);
+								bottom: 0;
+								background-color: #FFF;
+							}
+						}
+						.t{
+							@include r;
+							@include font(22px,28px,#87bace,bolder);
+							margin-bottom: 23px;
+						}
+						.w{
+							@include r;
+							@include font(13px,24px,#ffffff);
+							margin-bottom: 35px;
+						}
+						.more{
+							@include r(150px,30px);
+							@include font(15px,30px,#ffffff);
+							box-sizing:border-box;
+							border:1px solid #fff;
+							text-align: center;
+							cursor: pointer;
+						}
+					}							
+				}
+			}
+		}
+		.about{
+			@include r;
+			.aboutin{
+				@include r;
+				.banner{
+					@include r(100%,528px);
+					box-sizing:border-box;					
+					background: url(../images/about_banner.jpg) no-repeat;
+					background-position: center;			
+					.main{
+						@include a(100%,105px,0,50%);
+						@include transform(translate(0, -50%));
+						.logo_in{
+							@include r(100%,31px);
+							background: url(../images/logo_in.png) no-repeat;
+							background-position: center top;
+							padding-bottom: 23px;
+							margin-bottom: 25px;
+							&:before{
+								content:"";
+								@include a(66px,2px,50%,auto);
+								@include transform(translate(-50%, 0));
+								bottom: 0;
+								background-color: #fff;
+							}
+						}
+						.w{
+							@include r;
+							@include font(15px,15px,#ffffff,bolder);
+							box-sizing:border-box;
+							padding: 0 25px;
+							text-align: center;
+						}
+					}
+				}
+				.word{
+					@include r;
+					margin-top: 80px;
+					.wordin{
+						position: relative;
+						width: 100%;
+						max-width: $page_maxwidth_in;
+						margin: auto;
+						box-sizing:border-box;
+						padding: 0 25px;
+						.title{
+							@include r;
+							@include font(36px,45px,#87bace,bolder);
+							letter-spacing: 1px;
+							padding-bottom: 38px;
+							margin-bottom: 40px;
+							&:before{
+								content:"";
+								@include a(66px,2px,0,auto);
+								bottom: 0;
+								background-color: #fff;
+							}
+						}
+						.des{
+							@include r;
+							.lt{
+								@include r;
+								@include font(15px,27px,#ffffff);
+								letter-spacing: 1px;
+								box-sizing:border-box;
+								padding-right: 460px;
+							}
+							.rt{
+								@include a(427px,auto,auto);
+								right: 0;
+								.pic{
+									@include r;
+									&:before{
+										content:"";
+										@include a;
+										box-sizing:border-box;
+										border:10px solid #fff;
+										z-index: 1;
+									}
+									img{
+										width: 100%;
+										vertical-align: top;
+										display: inline-block;
+										margin-bottom: 4%;
+									}
+								}								
+							}
+						}
+					}
+				}
+			}
+		}
+		.service{
+			@include r;
+			.servicein{
+				@include r;
+				.banner{
+					@include r(100%,528px);
+					box-sizing:border-box;					
+					background: url(../images/service_banner.jpg) no-repeat;
+					background-position: center;			
+					.main{
+						@include a(100%,105px,0,50%);
+						@include transform(translate(0, -50%));
+						.logo_in{
+							@include r(100%,31px);
+							background: url(../images/logo_in.png) no-repeat;
+							background-position: center top;
+							padding-bottom: 23px;
+							margin-bottom: 25px;
+							&:before{
+								content:"";
+								@include a(66px,2px,50%,auto);
+								@include transform(translate(-50%, 0));
+								bottom: 0;
+								background-color: #fff;
+							}
+						}
+						.w{
+							@include r;
+							@include font(15px,15px,#ffffff,bolder);
+							box-sizing:border-box;
+							padding: 0 25px;
+							text-align: center;
+						}
+					}
+				}
+				.word{
+					@include r;
+					margin-top: 80px;
+					.wordin{
+						position: relative;
+						width: 100%;
+						max-width: $page_maxwidth_in;
+						margin: auto;
+						box-sizing:border-box;
+						padding: 0 25px;
+						.title{
+							@include r;
+							@include font(36px,45px,#87bace,bolder);
+							letter-spacing: 1px;
+							padding-bottom: 38px;
+							margin-bottom: 40px;
+							text-align: center;
+							&:before{
+								content:"";
+								@include a(66px,2px,50%,auto);
+								@include transform(translate(-50%,0));
+								bottom: 0;
+								background-color: #fff;
+							}
+						}
+						.des{
+							@include r;
+							@include font(15px,27px,#ffffff);
+							text-align: center;
+						}
+						.item_all{
+							@include r;
+							margin-top: 50px;
+							.lt{
+								@include r(48%);
+								margin-right: 4%;
+								text-align: right;
+							}
+							.rt{
+								@include r(48%);
+								padding-top: 200px;
+								text-align: left;
+							}
+							.item{
+								position: relative;
+								width: 370px;
+								display: inline-block;
+								vertical-align: top;
+								margin-bottom: 100px;
+								box-sizing:border-box;
+								padding-left: 25px;
+								background: url(../images/service_icon.png) no-repeat;
+								background-position: 0 5px;
+								transition:0.5s;
+								opacity: 0;
+								top: 100px;
+								&.on{opacity: 1;top: 0px;}
+								.t{
+									@include r;
+									@include font(22px,30px,#ffffff);
+									letter-spacing: 1px;
+									text-align: left;
+								}
+								.pic{
+									@include r(338px);
+									margin-top: 30px;
+									&:before{
+										content:"";
+										@include a;
+										box-sizing:border-box;
+										border:10px solid #fff;
+										z-index: 2;
+									}
+									img{
+										width: 100%;
+										vertical-align: top;
+										z-index: 0;
 									}
 								}
 							}
