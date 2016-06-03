@@ -1,11 +1,4 @@
-﻿(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.6&appId=1417992648226716";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));
-$(document).ready(function(){
+﻿$(document).ready(function(){
 	var webData ={};
 	webData.wrp=$('.wrapper');
 
@@ -16,7 +9,7 @@ $(document).ready(function(){
   //AddListener  	
   $('.menu .menua').click(function(){menuClick($(this));});
   $('.menu_mobile .menua').click(function(){menuClick($(this));});
-	$('.slide_show').each(slide_showfc);
+	$('.slide_show').each(slide_showfc);  
 	$(window).load(window_load);
 	function window_load(){
 		if(webData.wrp.hasClass('press_content')) press_content();
@@ -24,10 +17,51 @@ $(document).ready(function(){
     if(webData.wrp.hasClass('cars_list')) cars_list();
     if(webData.wrp.hasClass('press_list')) press_list();
     if(webData.wrp.hasClass('service')) service();
+    if(webData.wrp.hasClass('index')) indexfc();
+    
 	}
 
 
-	//Event 
+	//Event   
+  function getFBPOST(){
+    try{
+      FB.api(
+        "/1470554113202974?fields=posts.limit(6){message,link,full_picture,updated_time},name",
+        "GET",
+        {
+          "access_token": "1417992648226716|0FTtA2BhHYwO8PnVPu6hPVWzLIM"
+        },
+        function (response) {
+          webData.fbpost = response;
+          insertFBPOST();
+          if (response && !response.error){}
+          else console.log('FB POST ERROR');
+        }
+      );
+    } catch(err){console.log('FB POST ERROR');}
+  }
+  function insertFBPOST(){
+    for(i in webData.fbpost.posts.data){
+      $('.fb_areain').append('<div class="post"><a href="'+ webData.fbpost.posts.data[i].link +'" target="blank"><div class="n"><div class="front" style="background-image: url('+ webData.fbpost.posts.data[i].full_picture  +'); background-position:center; background-size:cover; background-repeat:no-repeat;"></div><div class="back"><div class="title"><div class="lt"></div><div class="rt"><div class="name">'+ webData.fbpost.name +'</div><div class="date">'+ webData.fbpost.posts.data[i].updated_time.split('T')[0] +'</div></div></div><div class="des">'+ webData.fbpost.posts.data[i].message +'</div></div></div></a></div>');
+    }
+  }
+  function indexfc(){
+    webData.banner_swiper = new Swiper('.banner_container', {  
+          speed:1000,   
+          wrapperClass: 'swiper-wrapper',
+          slideClass: 'swiper-slide',
+          slidesPerView: 1,
+          pagination: '.banner-pagination',        
+          paginationClickable: true,
+          spaceBetween: 0,
+          loop: true,
+          autoplay:6000,
+          autoplayDisableOnInteraction:false
+    });
+    $('.banner .leftbtn').click(function(){webData.banner_swiper.slidePrev();});
+    $('.banner .rightbtn').click(function(){webData.banner_swiper.slideNext();});
+    setTimeout(function(){getFBPOST();},300);    
+  }
   function service(){
     window.onscroll = windowOnscroll;
     windowOnscroll();
@@ -95,6 +129,13 @@ $(document).ready(function(){
       else aniDom.eq(i).removeClass('on');
     }    
   }
+  // function window_resize(){
+  //   for(var i = 0 ; i<$('.fbimg').length;i++){
+  //     var _mt = ($('.fbimg').eq(i).parent().outerHeight(true) - $('.fbimg').eq(i).height()) / 2;
+  //     console.log("index_window_resize:"+$('.fbimg').eq(i).parent().parent().parent().index()+"/ _mt:" + _mt);
+  //     $('.fbimg').eq(i).css('margin-top',_mt);
+  //   }
+  // }
 
 
 })//ready end 
