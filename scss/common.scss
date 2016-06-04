@@ -95,6 +95,7 @@ body{
 			display: inline-block;
 			vertical-align: top;
 			margin-left: 25px;
+			&:hover{opacity: 0.5;}
 			&:last-child{
 				margin-left: 0;
 			}
@@ -1235,6 +1236,7 @@ body{
 					background-position: center;
 					cursor: pointer;
 					z-index: 9;
+					&:hover{opacity: 0.8;}
 				}
 				.rightbtn{
 					@include a(40px,60px,auto,50%);
@@ -1244,6 +1246,7 @@ body{
 					background-position: center;
 					cursor: pointer;
 					z-index: 9;
+					&:hover{opacity: 0.8;}
 				}
 				.banner_container{
 					@include r;
