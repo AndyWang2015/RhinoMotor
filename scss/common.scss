@@ -4,6 +4,39 @@ $page_maxwidth_in:990px;
 body{
 	background-color:#000000;
 }
+.loading{
+	@include f;
+	z-index: 9999;
+	background-color: rgba(0,0,0,0.7);	
+	.main{
+		@include a(250px,100px,50%,50%);
+		@include transform(translate(-50%,-50%));
+		@include perspective(80px);
+		@include perspective-origin(50% 50%);
+		.pic{
+			@include a(100%,50px);
+			background: url(../images/loading.png) no-repeat;
+			background-position: center;
+			transition:0.3s;			
+			@include animation(loadingani 3s 0s infinite ease-out);
+		}		
+		@include keyframes(loadingani){
+		    0%  {@include transform(rotateY(540deg));}
+		    10%  {@include transform(rotateY(360deg));}
+		    80%  {@include transform(rotateY(360deg));}
+		    90%  {@include transform(rotateY(180deg));}
+		    100%  {@include transform(rotateY(180deg));}
+		} 
+		span{
+			@include a(100%,50px,0,auto);
+			@include font(15px,50px,#FFF,normal,'Arial');
+			letter-spacing: 6px;
+			bottom: 0;
+			text-align: center;
+			text-indent: 40px;
+		}
+	}
+}
 .top{
 	@include f(100%,88px);
 	box-shadow: 0 3px 3px rgba(0,0,0,0.8);

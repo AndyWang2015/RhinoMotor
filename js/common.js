@@ -17,8 +17,8 @@
     if(webData.wrp.hasClass('cars_list')) cars_list();
     if(webData.wrp.hasClass('press_list')) press_list();
     if(webData.wrp.hasClass('service')) service();
-    if(webData.wrp.hasClass('index')) indexfc();
-    
+    if(webData.wrp.hasClass('about')) about();
+    if(webData.wrp.hasClass('index')) indexfc();    
 	}
 
 
@@ -44,6 +44,7 @@
     for(i in webData.fbpost.posts.data){
       $('.fb_areain').append('<div class="post"><a href="'+ webData.fbpost.posts.data[i].link +'" target="blank"><div class="n"><div class="front" style="background-image: url('+ webData.fbpost.posts.data[i].full_picture  +'); background-position:center; background-size:cover; background-repeat:no-repeat;"></div><div class="back"><div class="title"><div class="lt"></div><div class="rt"><div class="name">'+ webData.fbpost.name +'</div><div class="date">'+ webData.fbpost.posts.data[i].updated_time.split('T')[0] +'</div></div></div><div class="des">'+ webData.fbpost.posts.data[i].message +'</div></div></div></a></div>');
     }
+    showloading(false);
   }
   function indexfc(){
     webData.banner_swiper = new Swiper('.banner_container', {  
@@ -65,25 +66,33 @@
   function service(){
     window.onscroll = windowOnscroll;
     windowOnscroll();
+    showloading(false);
+  }
+  function about(){
+    showloading(false);
   }
   function press_list(){
     webData.nowbrands = getUrlVars()['brands'];
     if(!webData.nowbrands) webData.nowbrands=1;
     $('.sec_menuin .menua').eq(webData.nowbrands*1-1).addClass('on');
+    showloading(false);
   }
   function cars_list(){
     webData.nowbrands = getUrlVars()['brands'];
     if(!webData.nowbrands) webData.nowbrands=1;
     $('.sec_menuin .menua').eq(webData.nowbrands*1-1).addClass('on');
+    showloading(false);
   }
   function cars_content(){
     if($('.slide_show').length !=0) $(".slide_show .s_pic_box").mCustomScrollbar({scrollInertia:300,scrollEasing:'linear'});
     if($('.cars_width').length !=0) $(".cars_width .item").mCustomScrollbar({scrollInertia:300,scrollEasing:'linear'});
     if($('.cars_des').length !=0) $(".cars_des .w").mCustomScrollbar({scrollInertia:300,scrollEasing:'linear'});
     if($('.fb_comment_box').length !=0) $(".fb_comment_box").mCustomScrollbar({scrollInertia:300,scrollEasing:'linear'});    
+    showloading(false);
   } 	
 	function press_content(){
 		if($('.slide_show').length !=0) $(".slide_show .s_pic_box").mCustomScrollbar({scrollInertia:300,scrollEasing:'linear'});
+    showloading(false);
 	}
 	function slide_showfc(){
 		var b_pic = $(this).find('.b_pic'),
@@ -117,6 +126,10 @@
   function gocontact(){
     $('html,body').animate({scrollTop:$('.contact').offset().top},500);
   }
+  function showloading(_t){
+    if(_t) $('.loading').fadeIn();
+    else $('.loading').fadeOut();
+  }
   function windowOnscroll(){
     var _bottom = window.pageYOffset + $(window).height() - webData.bottomDis;
     var aniDom = $('.item');
@@ -129,14 +142,6 @@
       else aniDom.eq(i).removeClass('on');
     }    
   }
-  // function window_resize(){
-  //   for(var i = 0 ; i<$('.fbimg').length;i++){
-  //     var _mt = ($('.fbimg').eq(i).parent().outerHeight(true) - $('.fbimg').eq(i).height()) / 2;
-  //     console.log("index_window_resize:"+$('.fbimg').eq(i).parent().parent().parent().index()+"/ _mt:" + _mt);
-  //     $('.fbimg').eq(i).css('margin-top',_mt);
-  //   }
-  // }
-
 
 })//ready end 
 function getUrlVars(){
