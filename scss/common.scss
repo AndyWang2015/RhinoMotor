@@ -4,6 +4,107 @@ $page_maxwidth_in:990px;
 body{
 	background-color:#000000;
 }
+.pop{
+	@include f;
+	z-index: 999;
+	display: none;
+	.cover{		
+		@include a;
+		z-index: 0;
+		background-color: rgba(0,0,0,0.8);
+	}
+	.popin{
+		@include a(472px,430px,50%,50%);
+		@include transform(translate(-50%,-50%));
+		background-color: #1e1e1e;		
+		transition:0.3s;
+		z-index: 2;
+		&.on{
+			height:500px;
+			.pages{
+				&.be_member{
+					left: 0;
+				}
+				&.login{
+					left: -100%;					
+				}
+			}		
+		}
+		.pages_all{
+			@include a;			
+			overflow: hidden;
+			background: url(../images/pop_logo.png) no-repeat;
+			background-position: center 20px;
+		}
+		.closebtn{
+			@include a(25px,25px,auto,-30px);
+			right: -30px;
+			background: url(../images/pop_closebtn.png) no-repeat;
+			background-position: center;
+			cursor: pointer;
+			transition:0.3s;
+			&:hover{
+				@include transform(rotateZ(180deg));
+			}
+		}
+		.pages{
+			@include a;
+			box-sizing:border-box;
+			padding: 65px;
+			transition:0.3s;
+			&.be_member{				
+				left: 100%;
+			}
+			&.login{
+				left: 0;
+			}
+			.title{
+				@include r;
+				@include font(18px,20px,#fff);
+				text-align: center;
+				margin-top: 55px;
+				margin-bottom: 35px;
+			}
+			input{
+				@include r(100%,47px);
+				@include border-radius(5px);
+				@include font(14px,47px,#fff);
+				box-sizing:border-box;
+				padding: 0 20px;
+				margin-bottom: 9px;
+				background-color: rgba(255,255,255,0.13);
+				text-align: center;
+			}
+			.btn{
+				@include r;
+				margin-top: 6px;
+				text-align: center;
+				.fblogin{
+					@include r(100%,47px);
+					margin-bottom: 15px;
+					background: url(../images/fbloginbtn.png) no-repeat;
+					background-position: center;
+					cursor: pointer;
+					&:hover{opacity: 0.8;}
+				}
+				a{
+					width: 48%;
+					height: 47px;
+					margin-right: 2%;
+					display: inline-block;
+					vertical-align: top;
+					@include font(18px,47px,#fff);
+					text-align: center;
+					background-color: #d30200;
+					&:last-child{
+						margin-right: 0;
+					}
+					&:hover{opacity: 0.9;}
+				}
+			}
+		}
+	}
+}
 .loading{
 	@include f;
 	z-index: 9999;

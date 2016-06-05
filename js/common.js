@@ -1,12 +1,43 @@
-﻿$(document).ready(function(){
+$(document).ready(function(){
 	var webData ={};
 	webData.wrp=$('.wrapper');
+  //member
+  $('body').append('<div class="pop"><div class="popin"><div class="closebtn"></div><div class="pages_all"><div class="pages be_member"><div class="title">加入會員</div><input type="text" class="name" placeholder="Name"><input type="text" class="mail" placeholder="E-MAIL"><input type="text" class="password" placeholder="Password"><input type="text" class="password_again" placeholder="Password again"><div class="btn"><a href="javascript:;" class="sendbtn">加入</a><a href="javascript:;" class="cancelbtn">取消</a></div></div><div class="pages login"><div class="title">會員登入</div><input type="text" class="mail" placeholder="E-MAIL"><input type="text" class="password" placeholder="Password"><div class="btn"><div class="fblogin"></div><a href="javascript:;" class="loginbtn">登入</a><a href="javascript:;" class="registbtn">註冊</a></div></div></div></div><div class="cover"></div></div>');
 
 	//Init
   webData.bottomDis = $(window).height() / 10;
+  var FBdata={per:"public_profile,email"};
+  var FBAppId = '1417992648226716'; //FB APP ID
+  var mainurl = window.location.href; //活動網址
+  var backurl = mainurl+'?fbback=1'; //手機登入轉址回來的網址
+  var permissionsword = "你必須同意授權"; //授權不足&不同意授權時 文案
+
+  //初始化FB APP
+  FB.init({
+    appId      : FBAppId,
+    channelUrl : mainurl,
+    status     : true,
+    xfbml      : true,
+    version    : 'v2.4',
+    cookie     : true
+  }); 
+
+  //偵測手機登入FB轉址回來
+  if(getUrlVars()['fbback']==1){
+    AfterFBback();
+    FBgetLoginStatus();
+  }
 
   	
-  //AddListener  	
+  //AddListener
+  $('.pop .loginbtn').click(function(){member_login();});
+  $('.pop .fblogin').click(function(){FBlogin();});
+  $('.pop .cover').click(function(){showmemberpop(false)});
+  $('.pop .closebtn').click(function(){showmemberpop(false)});
+  $('.pop .registbtn').click(function(){changememberpop(1);});
+  $('.pop .cancelbtn').click(function(){changememberpop(0);});  
+  $('.member_btn').click(function(){showmemberpop(true);});
+  $('.sendbtn').click(function(){if(!$(this).hasClass('on')){$(this).addClass('on');be_member();}});
   $('.menu .menua').click(function(){menuClick($(this));});
   $('.menu_mobile .menua').click(function(){menuClick($(this));});
 	$('.slide_show').each(slide_showfc);  
@@ -22,7 +53,32 @@
 	}
 
 
-	//Event   
+	//Event
+  function afterLogin(){
+    if(FBdata.user_name) alert(FBdata.user_name + '登入成功');
+    else alert('登入成功');
+    if(!device.mobile()){showmemberpop(false);}
+  }
+  function member_login(){
+    //check data
+    afterLogin();
+  }
+  function changememberpop(_n){
+    if(_n == 0) $('.pop .popin').removeClass('on');
+    else if(_n == 1) $('.pop .popin').addClass('on');
+  }
+  function showmemberpop(_t){
+    if(_t){
+      $('.pop').fadeIn();
+    }else{
+      $('.pop').fadeOut();
+    }
+  }
+  function be_member(){
+    alert("歡迎您的加入");
+    $('.pop .sendbtn').removeClass('on');
+    changememberpop(0);
+  }
   function getFBPOST(){
     try{
       FB.api(
@@ -141,6 +197,73 @@
       }
       else aniDom.eq(i).removeClass('on');
     }    
+  }
+  //檢查FB授權是否完整
+  function FBapi_permissions(){
+    FB.api('/me?fields=permissions', function (res){
+      FBdata.allpermissions = true;       
+          for(i in res.permissions.data){
+            if(res.permissions.data[i].status=="declined"){ 
+              FBdata.allpermissions = false;       
+            }
+          } 
+          if(FBdata.allpermissions){FBapi_getdata();}
+        else{alert(permissionsword);}
+      });  
+  } 
+
+  //檢查FB是否有登入
+  function FBgetLoginStatus(){
+    FB.getLoginStatus(function(response) {
+      if (response.status === 'connected') {
+        FBdata.user_token = response.authResponse.accessToken;        
+        FBapi_permissions();        
+      } else{
+      FBlogin();
+      }
+    });   
+  }
+
+  //FB登入
+  function FBlogin(){
+    if(device.mobile()){
+      var fburl = 'https://m.facebook.com/dialog/oauth?client_id='+FBAppId+'&redirect_uri='+ encodeURIComponent(backurl)+"&scope=" + FBdata.per+"&auth_type=rerequest";
+          window.location.href=fburl;               
+    }else{        
+      FB.login(function(response) {
+        if (response.authResponse) {
+          FBdata.user_token = FB.getAuthResponse()['accessToken'];
+          FBapi_permissions();          
+        }else{
+          alert(permissionsword);
+        }
+      },{scope: FBdata.per,auth_type: 'rerequest'});
+    } 
+  }
+
+  //抓取所需FB資料
+  function FBapi_getdata(){
+    FB.api('/me', function(response) {
+        FBdata.user_id=response.id;
+        FBdata.user_name = response.name;
+        FB.api('/me?fields=email', function (response){
+        FBdata.user_email = response.email;
+        AfterFBLogin();
+        });
+      });
+  }
+
+  //行動裝置登入FB轉址回來後恢復登入前畫面的執行事件
+  function AfterFBback(){
+    console.log("AfterFBback");
+  }
+
+  //登入FB以及抓取資料後的執行事件
+  function AfterFBLogin(){    
+    console.log('使用者ID:'+FBdata.user_id);
+    console.log('使用者名字:'+FBdata.user_name);
+    console.log('FB 使用者信箱:'+FBdata.user_email);
+    afterLogin();
   }
 
 })//ready end 
