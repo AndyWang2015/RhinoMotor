@@ -30,6 +30,8 @@ $(document).ready(function(){
 
   	
   //AddListener
+  $('.be_member .sendbtn').click(function(){joinusFC();});
+  $('.footer .send_btn').click(function(){contactFC();});
   $('.pop .loginbtn').click(function(){member_login();});
   $('.pop .fblogin').click(function(){FBlogin();});
   $('.pop .cover').click(function(){showmemberpop(false)});
@@ -54,6 +56,73 @@ $(document).ready(function(){
 
 
 	//Event
+  function joinusFC(){
+    var o = $('.pop .be_member');
+    var user_data = {
+      account: o.find('.name').val(),
+      email: o.find('.mail').val(),
+      userpwd: o.find('.password').val(),
+      userpwdagain: o.find('.password_again').val()
+    };
+    // http://www.rhino-motor.com/Web/index.do?method=joinus&account=xxx1&email=22@gmail.com&userpwd=1234
+    if(!user_data.customername || !user_data.customertel || !user_data.customeremail || !user_data.customeraddr || !user_data.customercontent){
+      console.log(user_data);
+      alert('還有未填寫的資料。');
+      return;
+    }
+    $.ajax({
+        url: 'http://www.rhino-motor.com/Web/index.do?method=linkus',
+        type: 'POST',
+        dataType: 'json',
+        data:user_data,
+        success: function(data) {
+          console.log(data);
+          if(data.status==0){
+            aftercontact();
+          }else alert(data.status);
+        },error: function(xhr, textStatus, errorThrown) {             
+          console.log("error:", xhr, textStatus, errorThrown);
+        }
+    });
+  }
+  function contactFC(){
+    var o = $('.footer .user_data');
+    var user_data = {
+      customername: o.find('.user_name').val(),
+      customertel: o.find('.user_phone').val(),
+      customeremail: o.find('.user_mail').val(),
+      customeraddress: o.find('.user_addr').val(),
+      customercontent: $('.footer .message').val()
+    };
+    if(!user_data.customername || !user_data.customertel || !user_data.customeremail || !user_data.customeraddress || !user_data.customercontent){
+      console.log(user_data);
+      alert('還有未填寫的資料。');
+      return;
+    }
+    $.ajax({
+        url: 'http://www.rhino-motor.com/Web/index.do?method=linkus',
+        type: 'POST',
+        dataType: 'json',
+        data:user_data,
+        success: function(data) {
+          console.log(data);
+          if(data.status==0){
+            aftercontact();
+          }else alert(data.status);
+        },error: function(xhr, textStatus, errorThrown) {             
+          console.log("error:", xhr, textStatus, errorThrown);
+        }
+    });
+  }
+  function aftercontact(){
+    var o = $('.footer .user_data');
+    o.find('.user_name').val('');
+    o.find('.user_phone').val('');
+    o.find('.user_mail').val('');
+    o.find('.user_addr').val('');
+    $('.footer .message').val('');
+    alert('送出成功');
+  }
   function afterLogin(){
     if(FBdata.user_name) alert(FBdata.user_name + '登入成功');
     else alert('登入成功');
