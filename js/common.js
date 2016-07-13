@@ -39,7 +39,6 @@ $(document).ready(function(){
   $('.pop .registbtn').click(function(){changememberpop(1);});
   $('.pop .cancelbtn').click(function(){changememberpop(0);});  
   $('.member_btn').click(function(){showmemberpop(true);});
-  $('.sendbtn').click(function(){if(!$(this).hasClass('on')){$(this).addClass('on');be_member();}});
   $('.menu .menua').click(function(){menuClick($(this));});
   $('.menu_mobile .menua').click(function(){menuClick($(this));});
 	$('.slide_show').each(slide_showfc);  
@@ -59,31 +58,49 @@ $(document).ready(function(){
   function joinusFC(){
     var o = $('.pop .be_member');
     var user_data = {
-      account: o.find('.name').val(),
+      name: o.find('.name').val(),
       email: o.find('.mail').val(),
       userpwd: o.find('.password').val(),
       userpwdagain: o.find('.password_again').val()
     };
-    // http://www.rhino-motor.com/Web/index.do?method=joinus&account=xxx1&email=22@gmail.com&userpwd=1234
-    if(!user_data.customername || !user_data.customertel || !user_data.customeremail || !user_data.customeraddr || !user_data.customercontent){
-      console.log(user_data);
+    if(!user_data.name || !user_data.email || !user_data.userpwd || !user_data.userpwdagain){
       alert('還有未填寫的資料。');
       return;
     }
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if(!re.test(user_data.email)){
+      alert('E-mail格式不正確');
+      return;
+    }
+    if(user_data.userpwd != user_data.userpwdagain){
+      alert('密碼前後不一致，請重新輸入');
+      o.find('.password').val('');
+      o.find('.password_again').val('');
+      return;
+    }
     $.ajax({
-        url: 'http://www.rhino-motor.com/Web/index.do?method=linkus',
+        url: 'http://www.rhino-motor.com/Web/index.do?method=joinus',
         type: 'POST',
         dataType: 'json',
         data:user_data,
         success: function(data) {
           console.log(data);
           if(data.status==0){
-            aftercontact();
+            afterjoinus();
           }else alert(data.status);
         },error: function(xhr, textStatus, errorThrown) {             
           console.log("error:", xhr, textStatus, errorThrown);
         }
     });
+  }
+  function afterjoinus(){
+    var o = $('.pop .be_member');
+    o.find('.name').val('');
+    o.find('.mail').val('');
+    o.find('.password').val('');
+    o.find('.password_again').val('');
+    alert('註冊成功');
+    changememberpop(0);
   }
   function contactFC(){
     var o = $('.footer .user_data');
@@ -95,8 +112,17 @@ $(document).ready(function(){
       customercontent: $('.footer .message').val()
     };
     if(!user_data.customername || !user_data.customertel || !user_data.customeremail || !user_data.customeraddress || !user_data.customercontent){
-      console.log(user_data);
       alert('還有未填寫的資料。');
+      return;
+    }
+    var pattern = /^(0\d+)(\d{8})/;
+    if (!pattern.test(user_data.customertel) || user_data.customertel.length!=10) {
+      alert('電話格式不正確，請填入手機號碼，例如：09xx 123 456，共10碼。');
+      return;
+    }
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if(!re.test(user_data.customeremail)){
+      alert('E-mail格式不正確');
       return;
     }
     $.ajax({
@@ -126,11 +152,35 @@ $(document).ready(function(){
   function afterLogin(){
     if(FBdata.user_name) alert(FBdata.user_name + '登入成功');
     else alert('登入成功');
-    if(!device.mobile()){showmemberpop(false);}
+    showmemberpop(false);
+    $('.pop .login').find('.mail').val('');
+    $('.pop .login').find('.password').val('');
   }
   function member_login(){
     //check data
-    afterLogin();
+    var o = $('.pop .login');
+    var user_data = {
+      email: o.find('.mail').val(),
+      userpwd: o.find('.password').val()
+    };
+    if(!user_data.email || !user_data.userpwd){
+      alert('還有未填寫的資料。');
+      return;
+    }
+    $.ajax({
+        url: 'http://www.rhino-motor.com/Web/index.do?method=joinus',
+        type: 'POST',
+        dataType: 'json',
+        data:user_data,
+        success: function(data) {
+          console.log(data);
+          if(data.status==0){
+            afterLogin();
+          }else alert(data.status);
+        },error: function(xhr, textStatus, errorThrown) {             
+          console.log("error:", xhr, textStatus, errorThrown);
+        }
+    });
   }
   function changememberpop(_n){
     if(_n == 0) $('.pop .popin').removeClass('on');
@@ -142,11 +192,6 @@ $(document).ready(function(){
     }else{
       $('.pop').fadeOut();
     }
-  }
-  function be_member(){
-    alert("歡迎您的加入");
-    $('.pop .sendbtn').removeClass('on');
-    changememberpop(0);
   }
   function getFBPOST(){
     try{
@@ -332,7 +377,27 @@ $(document).ready(function(){
     console.log('使用者ID:'+FBdata.user_id);
     console.log('使用者名字:'+FBdata.user_name);
     console.log('FB 使用者信箱:'+FBdata.user_email);
-    afterLogin();
+
+    var user_data = {
+      email: FBdata.user_email,
+      userpwd: FBdata.user_id,
+      name: FBdata.user_name
+    };
+
+    $.ajax({
+        url: 'http://www.rhino-motor.com/Web/index.do?method=fblogin',
+        type: 'POST',
+        dataType: 'json',
+        data:user_data,
+        success: function(data) {
+          console.log(data);
+          if(data.status==0){
+            afterLogin();
+          }else alert(data.status);
+        },error: function(xhr, textStatus, errorThrown) {             
+          console.log("error:", xhr, textStatus, errorThrown);
+        }
+    });
   }
 
 })//ready end 
