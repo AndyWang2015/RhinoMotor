@@ -489,7 +489,7 @@ body{
 						width:$page_maxwidth_in;
 						margin: auto;
 						.btn{
-							@include r(auto,100%);
+							@include r(auto,auto);
 							float: right;
 							a{
 								@include r;
@@ -759,7 +759,7 @@ body{
 								margin-top: 50px;
 							}
 							.item{
-								@include r(100%,500px);
+								@include r(100%,300px);
 								margin-top: 25px;
 								overflow: hidden;								
 								.itemin{
@@ -792,7 +792,7 @@ body{
 								margin-top: 50px;
 							}
 							.w{
-								@include r(100%,500px);
+								@include r(100%,300px);
 								@include font(13px,24px,rgba(255,255,255,0.7));
 								margin-top: 25px;
 								overflow: hidden;								
@@ -815,7 +815,7 @@ body{
 							margin-top: 50px;
 						}
 						.fb_comment_box{
-							@include r(100%,500px);
+							@include r(100%,300px);
 							overflow: hidden;
 						}
 					}

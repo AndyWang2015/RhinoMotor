@@ -30,6 +30,10 @@ $(document).ready(function(){
 
   	
   //AddListener
+  $('.search_btn').click(function(){searchcar();});
+  $('.search_text').on('keydown',function(e){
+    if(e.keyCode == 13)searchcar();
+  });
   $('.be_member .sendbtn').click(function(){joinusFC();});
   $('.footer .send_btn').click(function(){contactFC();});
   $('.pop .loginbtn').click(function(){member_login();});
@@ -45,16 +49,58 @@ $(document).ready(function(){
 	$(window).load(window_load);
 	function window_load(){
 		if(webData.wrp.hasClass('press_content')) press_content();
-    if(webData.wrp.hasClass('cars_content')) cars_content();
-    if(webData.wrp.hasClass('cars_list')) cars_list();
-    if(webData.wrp.hasClass('press_list')) press_list();
-    if(webData.wrp.hasClass('service')) service();
-    if(webData.wrp.hasClass('about')) about();
-    if(webData.wrp.hasClass('index')) indexfc();    
+    else if(webData.wrp.hasClass('cars_content')) cars_content();
+    else if(webData.wrp.hasClass('cars_list')) cars_list();
+    else if(webData.wrp.hasClass('press_list')) press_list();
+    else if(webData.wrp.hasClass('service')) service();
+    else if(webData.wrp.hasClass('about')) about();
+    else if(webData.wrp.hasClass('index')) indexfc();
+    else if(webData.wrp.hasClass('search')) searchfc();
 	}
 
 
 	//Event
+  function searchcar(){
+    if($('.search_text').val()!=''){
+      var _url = 'http://www.rhino-motor.com/Web/search.html?cht=' + $('.search_text').val();
+      window.location.href = _url;
+    }else alert('請輸入搜尋資料');
+  }
+  function searchfc(){
+    $.ajax({
+        url: 'http://www.rhino-motor.com/Web/product.do?method=productAll',
+        type: 'POST',
+        dataType: 'json',
+        success: function(data) {
+          webData.searchdata = data;
+          console.log(webData.searchdata);
+          aftersearch();
+        },error: function(xhr, textStatus, errorThrown) {
+          showloading(false);
+          console.log("error:", xhr, textStatus, errorThrown);
+        }
+    });
+  }
+  function aftersearch(){
+    console.log(webData.searchdata.cars);
+    var car_list = $('.wrapper').find('.cars_listin');
+    var _txt = getUrlVars()['cht'];
+    car_list.html('');
+    var _true = true;
+    for(var i=0; i<webData.searchdata.cars.length; i++){
+      if(webData.searchdata.cars[i].name.match(_txt)){
+        _true = false;
+        var _img = '/Web/product_DbAction.do?method=showTempImage&tempkey=' + webData.searchdata.cars[i].img.split(',')[0];
+        if(!webData.searchdata.cars[i].url) webData.searchdata.cars[i].url='http://www.rhino-motor.com/Web/index.do?method=index';
+        car_list.append('<div class="n"><a href="'+webData.searchdata.cars[i].url+'"><div class="pic"><img src="'+_img+'"></div><div class="word"><div class="t">'+webData.searchdata.cars[i].name+'</div><div class="price">'+webData.searchdata.cars[i].price+'</div></div></a></div>');
+      }
+    }
+    if(_true){
+      alert('沒有符合的資料。');
+      window.location.href='http://www.rhino-motor.com/Web/index.do?method=carsList';
+    }
+    showloading(false);
+  }
   function joinusFC(){
     var o = $('.pop .be_member');
     var user_data = {
