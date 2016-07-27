@@ -1358,11 +1358,13 @@ body{
 							a{
 								@include r;
 								.pic{
-									@include r;
+									@include r(100%,0);
+									padding-bottom: 32%;
 									z-index: 0;
+									overflow: hidden;
 									img{
-										width: auto;
-										max-width: 100%;
+										@include a(auto,100%,50%);
+										@include transform(translate(-50%,0));
 									}
 								}
 								.word{
@@ -1478,16 +1480,22 @@ body{
 								background: url(../images/cars_content_title_icon_s.png) no-repeat;
 								background-position: 15px 5px;
 								.t{
-									@include r;
+									@include r(100%,24px);
 									@include font(18px,24px,#ffffff);
 									letter-spacing: 1px;
+									text-overflow:ellipsis;
+									white-space: nowrap;
+									overflow: hidden;
 								}
 								.price{
-									@include r;
+									@include r(100%,24px);
 									@include font(15px,24px,#ffffff);
 									box-sizing:border-box;
 									padding-left: 45px;
 									text-align: left;
+									text-overflow:ellipsis;
+									white-space: nowrap;
+									overflow: hidden;
 									&:before{
 										content:"售價 :";
 										@include a(45px,100%);
@@ -1497,11 +1505,15 @@ body{
 									}
 								}
 								.date{
-									@include r;
+									@include r(100%,24px);
 									@include font(15px,24px,#ffffff);
+									min-height: 24px;
 									box-sizing:border-box;
 									padding-left: 45px;
 									text-align: left;
+									text-overflow:ellipsis;
+									white-space: nowrap;
+									overflow: hidden;
 									&:before{
 										content:"日期 :";
 										@include a(45px,100%);
@@ -1572,6 +1584,10 @@ body{
 							vertical-align: top;
 							padding: 30px;
 							background-color: #1e1e1e;
+							display: none;
+							&:nth-child(1),&:nth-child(2),&:nth-child(3){
+								display: block;
+							}
 							&:nth-child(3n){
 								margin-right: 0;
 							}
@@ -1793,7 +1809,7 @@ body{
 		.right{
 			@include a(1024px,100%,auto);
 			box-sizing:border-box;
-			padding: 60px;
+			padding: 95px 60px;
 			right: 0;
 			z-index: 9;
 			background-color: #1e1e1e;
@@ -1811,25 +1827,56 @@ body{
 					}
 					.user_data{
 						@include r;
-						opacity: 0.7;
-						input{
-							@include font(14px,45px,#ffffff);
-							@include r(100%,45px);
-							margin-bottom: 14px;
-							border-radius:5px;
-							background-color: #3b3b3b;
+						.line_qrcode{
+							@include r(31.7%,108px);
+							margin-right: 3.6%;
+						}
+						.send_btn{
+							@include r(64.7%,108px);
+							@include border-radius(5px);
+							cursor: pointer;
+							box-sizing:border-box;
+							border:3px solid #fff;
 							text-align: center;
-							&.user_addr{margin-bottom: 0;}
-							&.user_name{width: 49%;margin-right: 2%;}
-							&.user_phone{width: 49%;}
+							opacity: 0.7;
+							span{
+								@include a;
+								@include font(18px,105px,#ffffff,bolder,'Arial');
+								z-index: 1;
+							}
+							&:before{
+								content:"";
+								@include a;
+								z-index: 0;
+								background-color: #fff;
+								opacity: 0;
+								transition:0.3s;
+							}
+							&:hover{
+								&:before{opacity: 1;}
+								span{color:#000;}
+							}
 						}
 					}
 				}
 				.rt{
 					@include r(470px,100%);
 					opacity: 0.7;
+					input{
+						@include font(14px,45px,#ffffff);
+						@include r(100%,45px);
+						margin-bottom: 14px;
+						border-radius:5px;
+						background-color: #3b3b3b;
+						text-align: left;
+						&.user_mail,&.user_addr{
+							text-indent: 15px;
+						}
+						&.user_name{width: 49%;margin-right: 2%;text-align: center;}
+						&.user_phone{width: 49%;text-align: center;}
+					}
 					.message{
-						@include r(100%,270px);
+						@include r(100%,152px);
 						@include font(14px,24px,#ffffff);
 						@include border-radius(5px);
 						box-sizing:border-box;
@@ -1839,31 +1886,7 @@ body{
 						border:0;
 						outline: none !important;
 					}
-					.send_btn{
-						@include r(100%,95px);
-						@include border-radius(5px);
-						cursor: pointer;
-						box-sizing:border-box;
-						border:3px solid #fff;
-						text-align: center;
-						span{
-							@include a;
-							@include font(18px,95px,#ffffff,bolder,'Arial');
-							z-index: 1;
-						}
-						&:before{
-							content:"";
-							@include a;
-							z-index: 0;
-							background-color: #fff;
-							opacity: 0;
-							transition:0.3s;
-						}
-						&:hover{
-							&:before{opacity: 1;}
-							span{color:#000;}
-						}
-					}
+					
 				}
 			}
 		}
@@ -1902,7 +1925,7 @@ body{
 			.right{
 				@include a(890px,100%,auto);
 				box-sizing:border-box;
-				padding: 60px 30px 60px 30px;
+				padding: 95px 30px 95px 30px;
 				right: 0;
 				z-index: 9;
 				background-color: #1e1e1e;
@@ -1920,7 +1943,6 @@ body{
 						}
 						.user_data{
 							@include r;
-							opacity: 0.7;
 							input{
 								@include font(14px,45px,#ffffff);
 								@include r(100%,45px);
@@ -1938,7 +1960,7 @@ body{
 						@include r(470px,100%);
 						opacity: 0.7;
 						.message{
-							@include r(100%,270px);
+							@include r(100%,152px);
 							@include font(14px,24px,#ffffff);
 							@include border-radius(5px);
 							box-sizing:border-box;
@@ -1999,17 +2021,18 @@ body{
 				}
 			}
 			.right{
-				@include a(1024px,100%,auto);
+				@include a(100%,100%,auto);
 				box-sizing:border-box;
-				padding: 60px;
+				padding: 95px 60px;
 				right: 0;
 				z-index: 9;
 				background-color: #1e1e1e;
 				.main{
 					@include r(100%,390px);
 					.lt{
-						@include r(340px,100%);
-						margin-right: 15px;
+						@include a(340px);
+						margin-right:0;
+						z-index: 9;
 						.fb_box{
 							@include r;
 							margin-bottom: 14px;
@@ -2019,7 +2042,6 @@ body{
 						}
 						.user_data{
 							@include r;
-							opacity: 0.7;
 							input{
 								@include font(14px,45px,#ffffff);
 								@include r(100%,45px);
@@ -2034,10 +2056,12 @@ body{
 						}
 					}
 					.rt{
-						@include r(470px,100%);
+						@include r(100%,100%);
+						box-sizing:border-box;
+						padding-left: 355px;
 						opacity: 0.7;
 						.message{
-							@include r(100%,270px);
+							@include r(100%,152px);
 							@include font(14px,24px,#ffffff);
 							@include border-radius(5px);
 							box-sizing:border-box;

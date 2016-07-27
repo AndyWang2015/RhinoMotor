@@ -62,7 +62,7 @@ $(document).ready(function(){
 	//Event
   function searchcar(){
     if($('.search_text').val()!=''){
-      var _url = 'http://www.rhino-motor.com/Web/search.html?cht=' + $('.search_text').val();
+      var _url = 'http://www.rhino-motor.com/Web/index.do?method=search&cht=' + $('.search_text').val();
       window.location.href = _url;
     }else alert('請輸入搜尋資料');
   }
