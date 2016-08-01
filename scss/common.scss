@@ -1791,6 +1791,23 @@ body{
 .footer{
 	@include r;
 	margin-top: 100px;
+	.gotop{
+		@include f(40px,40px,auto,auto);
+		@include border-radius(5px);
+		right: 25px;
+		bottom: 110px;
+		z-index: 9999;
+		cursor: pointer;
+		background-color: #FFF;
+		&:before{
+			content:"";
+			@include a(15px,15px,50%,50%,-8px,-3px);
+			@include transform(rotateZ(45deg));
+			border-left: 2px solid #000;
+			border-top: 2px solid #000;
+		}
+
+	}
 	.contact{
 		@include r;
 		.left{

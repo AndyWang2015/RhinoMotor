@@ -30,6 +30,7 @@ $(document).ready(function(){
 
   	
   //AddListener
+  $('.footer .gotop').click(function(){gotopfc();});
   $('.search_btn').click(function(){searchcar();});
   $('.search_text').on('keydown',function(e){
     if(e.keyCode == 13)searchcar();
@@ -46,6 +47,7 @@ $(document).ready(function(){
   $('.menu .menua').click(function(){menuClick($(this));});
   $('.menu_mobile .menua').click(function(){menuClick($(this));});
 	$('.slide_show').each(slide_showfc);  
+  $(window).scroll(window_scroll);
 	$(window).load(window_load);
 	function window_load(){
 		if(webData.wrp.hasClass('press_content')) press_content();
@@ -60,6 +62,13 @@ $(document).ready(function(){
 
 
 	//Event
+  function window_scroll(){
+    if(window.pageYOffset >0) $('.footer .gotop').fadeIn();
+    else $('.footer .gotop').fadeOut();
+  }
+  function gotopfc(){
+    $('body,html').animate({scrollTop:0},500);
+  }
   function searchcar(){
     if($('.search_text').val()!=''){
       var _url = 'http://www.rhino-motor.com/Web/index.do?method=search&cht=' + $('.search_text').val();
@@ -149,7 +158,7 @@ $(document).ready(function(){
     changememberpop(0);
   }
   function contactFC(){
-    var o = $('.footer .user_data');
+    var o = $('.footer .right');
     var user_data = {
       customername: o.find('.user_name').val(),
       customertel: o.find('.user_phone').val(),
@@ -187,7 +196,7 @@ $(document).ready(function(){
     });
   }
   function aftercontact(){
-    var o = $('.footer .user_data');
+    var o = $('.footer .right');
     o.find('.user_name').val('');
     o.find('.user_phone').val('');
     o.find('.user_mail').val('');
@@ -337,7 +346,7 @@ $(document).ready(function(){
 	}
   function menuClick(_o){
     var _txt = _o.find('a').text();
-    if(_txt == 'CONTACT US') gocontact();
+    if(_txt == '聯絡我們') gocontact();
   }
   function gocontact(){
     $('html,body').animate({scrollTop:$('.contact').offset().top},500);
