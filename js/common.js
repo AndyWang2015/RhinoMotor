@@ -315,7 +315,7 @@ $(document).ready(function(){
     //cars_list
     $('.cars_listin').html('');
     for(j in data[webData.nowbrands].cars){
-      $('.cars_listin').prepend('<div class="n"><a href="cars_content.html?brands='+webData.nowbrands+'&cid='+j+'"><div class="pic"><img src="'+ data[webData.nowbrands].cars[j].carsImg[0] +'"></div><div class="word"><div class="t">'+ data[webData.nowbrands].cars[j].name +'</div><div class="price">'+data[webData.nowbrands].cars[j].price+'</div><div class="date">2016/05/03</div></div></a></div>');
+      $('.cars_listin').prepend('<div class="n"><a href="cars_content.html?brands='+webData.nowbrands+'&cid='+j+'"><div class="pic"><img src="'+ data[webData.nowbrands].cars[j].carsImg[0] +'"></div><div class="word"><div class="t">'+ data[webData.nowbrands].cars[j].name +'</div><div class="price">'+data[webData.nowbrands].cars[j].price+'</div><div class="date">'+data[webData.nowbrands].cars[j].date+'</div></div></a></div>');
     }
     showloading(false);
   }
@@ -327,10 +327,22 @@ $(document).ready(function(){
     $('.cars_info .slide_showin .s_pic_box ul').html('');
     for(i in o.carsImg) $('.cars_info .slide_showin .s_pic_box ul').append('<li><div class="s_pic"><img src="'+o.carsImg[i]+'"></div></li>');
     $('.slide_show').each(slide_showfc);
+    $('.cars_brief .itemin').html('');
     for(j in o.equipped) $('.cars_brief .itemin').append('<span>'+o.equipped[j]+'</span>');
     $('.cars_brief .cars_des .win').html(o.des);
     $('.fb-comments').attr('data-href',location.href);
     FB.XFBML.parse();
+    $('.interested_areain .box').html('');
+    var max = 0;
+    for(k in data){
+      for(m in data[k].cars){
+        if(max<4 &&  data[k].cars[m].recommend){
+          max+=1;
+          $('.interested_areain .box').append('<div class="n"><a href="cars_content.html?brands='+k+'&cid='+m+'"><div class="pic"><img src="'+ data[k].cars[m].carsImg[0] +'"></div><div class="word"><div class="t">'+ data[k].cars[m].name +'</div><div class="price">'+data[k].cars[m].price+'</div><div class="date">'+data[k].cars[m].date+'</div></div></a></div>')
+        }
+      }
+    }
+
 
     if($('.slide_show').length !=0) $(".slide_show .s_pic_box").mCustomScrollbar({scrollInertia:300,scrollEasing:'linear'});
     if($('.cars_width').length !=0) $(".cars_width .item").mCustomScrollbar({scrollInertia:300,scrollEasing:'linear'});
