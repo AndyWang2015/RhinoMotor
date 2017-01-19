@@ -176,7 +176,7 @@ body{
 				}
 				a{
 					@include r(auto,100%);
-					@include font(15px,18px,#000000,normal,'Arial');
+					@include font(15px,18px,#000000,normal);
 					text-align: center;
 					&:hover{
 						color:#d30200;

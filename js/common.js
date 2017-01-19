@@ -1,6 +1,7 @@
 $(document).ready(function(){
 	var webData ={};
 	webData.wrp=$('.wrapper');
+  webData.mlabApikey = "n6FXodWWCdM14KrePZHrRPPovbzboRn6";
   //member
   $('body').append('<div class="pop"><div class="popin"><div class="closebtn"></div><div class="pages_all"><div class="pages be_member"><div class="title">加入會員</div><input type="text" class="name" placeholder="Name"><input type="text" class="mail" placeholder="E-MAIL"><input type="text" class="password" placeholder="Password"><input type="text" class="password_again" placeholder="Password again"><div class="btn"><a href="javascript:;" class="sendbtn">加入</a><a href="javascript:;" class="cancelbtn">取消</a></div></div><div class="pages login"><div class="title">會員登入</div><input type="text" class="mail" placeholder="E-MAIL"><input type="text" class="password" placeholder="Password"><div class="btn"><div class="fblogin"></div><a href="javascript:;" class="loginbtn">登入</a><a href="javascript:;" class="registbtn">註冊</a></div></div></div></div><div class="cover"></div></div>');
 
@@ -46,13 +47,13 @@ $(document).ready(function(){
   $('.member_btn').click(function(){showmemberpop(true);});
   $('.menu .menua').click(function(){menuClick($(this));});
   $('.menu_mobile .menua').click(function(){menuClick($(this));});
-	$('.slide_show').each(slide_showfc);  
+	// $('.slide_show').each(slide_showfc);  
   $(window).scroll(window_scroll);
 	$(window).load(window_load);
 	function window_load(){
 		if(webData.wrp.hasClass('press_content')) press_content();
-    else if(webData.wrp.hasClass('cars_content')) cars_content();
-    else if(webData.wrp.hasClass('cars_list')) cars_list();
+    else if(webData.wrp.hasClass('cars_content')) getDataCollection('carsPage',cars_content);
+    else if(webData.wrp.hasClass('cars_list')) getDataCollection('carsPage',cars_list);
     else if(webData.wrp.hasClass('press_list')) press_list();
     else if(webData.wrp.hasClass('service')) service();
     else if(webData.wrp.hasClass('about')) about();
@@ -302,13 +303,33 @@ $(document).ready(function(){
     $('.sec_menuin .menua').eq(webData.nowbrands*1-1).addClass('on');
     showloading(false);
   }
-  function cars_list(){
+  function cars_list(data){
     webData.nowbrands = getUrlVars()['brands'];
-    if(!webData.nowbrands) webData.nowbrands=1;
-    $('.sec_menuin .menua').eq(webData.nowbrands*1-1).addClass('on');
+    if(!webData.nowbrands) webData.nowbrands=0;
+
+    // sec_menu
+    $('.sec_menuin .menua').remove();
+    for(i in data) $('.sec_menuin').append('<div class="menua"><a href="cars_list.html?brands='+i+'">'+data[i].brands+'</a></div>');
+    $('.sec_menuin .menua').eq(webData.nowbrands*1).addClass('on');
+    
+    //cars_list
+    $('.cars_listin').html('');
+    for(j in data[webData.nowbrands].cars){
+      $('.cars_listin').prepend('<div class="n"><a href="cars_content.html?brands='+webData.nowbrands+'&cid='+j+'"><div class="pic"><img src="'+ data[webData.nowbrands].cars[j].carsImg[0] +'"></div><div class="word"><div class="t">'+ data[webData.nowbrands].cars[j].name +'</div><div class="price">'+data[webData.nowbrands].cars[j].price+'</div><div class="date">2016/05/03</div></div></a></div>');
+    }
     showloading(false);
   }
-  function cars_content(){
+  function cars_content(data){
+    var o = data[getUrlVars()['brands']].cars[getUrlVars()['cid']];
+    $('.cars_info .info .t').html(o.name);
+    $('.cars_info .info .st').html(o.info);
+    $('.cars_info .info .w').html(o.infoAll);
+    $('.cars_info .slide_showin .s_pic_box ul').html('');
+    for(i in o.carsImg) $('.cars_info .slide_showin .s_pic_box ul').append('<li><div class="s_pic"><img src="'+o.carsImg[i]+'"></div></li>');
+    $('.slide_show').each(slide_showfc);
+    for(j in o.equipped) $('.cars_brief .itemin').append('<span>'+o.equipped[j]+'</span>');
+    $('.cars_brief .cars_des .win').html(o.des);
+
     if($('.slide_show').length !=0) $(".slide_show .s_pic_box").mCustomScrollbar({scrollInertia:300,scrollEasing:'linear'});
     if($('.cars_width').length !=0) $(".cars_width .item").mCustomScrollbar({scrollInertia:300,scrollEasing:'linear'});
     if($('.cars_des').length !=0) $(".cars_des .w").mCustomScrollbar({scrollInertia:300,scrollEasing:'linear'});
@@ -454,6 +475,19 @@ $(document).ready(function(){
         }
     });
   }
+  function getDataCollection(_collectname,_callback){
+		$.ajax({
+			url: 'https://api.mlab.com/api/1/databases/rhinomotor2017/collections/'+_collectname+'?apiKey='+ webData.mlabApikey,
+			type: 'GET',
+			contentType: 'application/json',
+			success: function(data) {
+        console.log(data);
+				_callback(data);				
+			},error: function(xhr, textStatus, errorThrown) {             
+				console.log("error:", xhr, textStatus, errorThrown);
+			}
+		});
+	}
 
 })//ready end 
 function getUrlVars(){
