@@ -329,6 +329,8 @@ $(document).ready(function(){
     $('.slide_show').each(slide_showfc);
     for(j in o.equipped) $('.cars_brief .itemin').append('<span>'+o.equipped[j]+'</span>');
     $('.cars_brief .cars_des .win').html(o.des);
+    $('.fb-comments').attr('data-href',location.href);
+    FB.XFBML.parse();
 
     if($('.slide_show').length !=0) $(".slide_show .s_pic_box").mCustomScrollbar({scrollInertia:300,scrollEasing:'linear'});
     if($('.cars_width').length !=0) $(".cars_width .item").mCustomScrollbar({scrollInertia:300,scrollEasing:'linear'});
