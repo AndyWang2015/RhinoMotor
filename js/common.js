@@ -57,7 +57,12 @@ $(document).ready(function(){
     else if(webData.wrp.hasClass('cars_list')) getDataCollection('carsPage',cars_list);
     else if(webData.wrp.hasClass('service')) service();
     else if(webData.wrp.hasClass('about')) about();
-    else if(webData.wrp.hasClass('index')) indexfc();
+    else if(webData.wrp.hasClass('index')) {
+      webData.indexData = {};
+      getDataCollectionIndex('indexBanner',indexfc);
+      getDataCollectionIndex('carsPage',indexfc);
+      getDataCollectionIndex('pressPage',indexfc);
+    }
     else if(webData.wrp.hasClass('search')) getDataCollection('carsPage',searchfc);
 	}
 
@@ -258,22 +263,37 @@ $(document).ready(function(){
     for(i in webData.fbpost.posts.data){
       $('.fb_areain').append('<div class="post"><a href="'+ webData.fbpost.posts.data[i].link +'" target="blank"><div class="n"><div class="front" style="background-image: url('+ webData.fbpost.posts.data[i].full_picture  +'); background-position:center; background-size:cover; background-repeat:no-repeat;"></div><div class="back"><div class="title"><div class="lt"></div><div class="rt"><div class="name">'+ webData.fbpost.name +'</div><div class="date">'+ webData.fbpost.posts.data[i].updated_time.split('T')[0] +'</div></div></div><div class="des">'+ webData.fbpost.posts.data[i].message +'</div></div></div></a></div>');
     }
-    showloading(false);
   }
-  function indexfc(){
-    // $.ajax({
-		// 	url: 'https://api.mlab.com/api/1/databases/chinesechess2016/collections/news_page'+_n+'?s={"_id":-1}&l=3&apiKey='+webData.mlabApikey,
-		// 	type: 'GET',
-		// 	contentType: 'application/json',
-		// 	success: function(data) {
-		// 		data.collections = _n;
-		// 		webData.indexNews.push(data);
-		// 		indexcallback();
-		// 	},error: function(xhr, textStatus, errorThrown) {             
-		// 		console.log("error:", xhr, textStatus, errorThrown);
-		// 	}
-		// });
-    webData.banner_swiper = new Swiper('.banner_container', {  
+  function indexfc(data,_collectname){
+    if(_collectname == 'carsPage'){
+      webData.indexData.carsPage=data;
+      $('.cars_areain .box').html('');
+      var max = 0;
+      for(i in webData.indexData.carsPage){
+        for(j in webData.indexData.carsPage[i].cars){
+          $('.cars_areain .box').prepend('<div class="n"><a href="cars_content.html?brands='+i+'&cid='+j+'"><div class="pic"><img src="'+ webData.indexData.carsPage[i].cars[j].carsImg[0] +'"></div><div class="word"><div class="t">'+ webData.indexData.carsPage[i].cars[j].name +'</div><div class="price">'+webData.indexData.carsPage[i].cars[j].price+'</div><div class="date">'+webData.indexData.carsPage[i].cars[j].date+'</div></div></a></div>');
+          max+=1;
+          if(max>=8) break;
+        }
+      }
+    }else if(_collectname == 'pressPage'){
+      webData.indexData.pressPage=data;
+      $('.press_areain .box').html('');
+      var max = 0;
+      for(i in webData.indexData.pressPage){
+        for(j in webData.indexData.pressPage[i].press){
+          $('.press_areain .box').prepend('<div class="n"><a href="press_content.html?brands='+i+'&cid='+j+'"><div class="pic"><img src="'+webData.indexData.pressPage[i].press[j].photo[0]+'"></div><div class="date">'+webData.indexData.pressPage[i].press[j].date+'</div><div class="t">'+webData.indexData.pressPage[i].press[j].title+'</div><div class="w">'+webData.indexData.pressPage[i].press[j].content.substring(0,100)+'</div><div class="more">MORE</div></a></div>');
+          max+=1;
+          if(max>=3) break;
+        }
+      }
+    }else if(_collectname == 'indexBanner'){
+      webData.indexData.indexBanner=data;
+      $('.banner_container .swiper-wrapper').html('');
+      for(i in webData.indexData.indexBanner){
+        $('.banner_container .swiper-wrapper').prepend('<div class="swiper-slide"><a href="'+webData.indexData.indexBanner[i].href+'"><div class="word '+webData.indexData.indexBanner[i].textColor+'"><div class="big">'+webData.indexData.indexBanner[i].bTitle+'</div><div class="small">'+webData.indexData.indexBanner[i].sTitle+'</div></div><div class="pic"><img src="'+ webData.indexData.indexBanner[i].photo +'"></div></a></div>');
+      }
+      webData.banner_swiper = new Swiper('.banner_container', {  
           speed:1000,   
           wrapperClass: 'swiper-wrapper',
           slideClass: 'swiper-slide',
@@ -287,6 +307,10 @@ $(document).ready(function(){
     });
     $('.banner .leftbtn').click(function(){webData.banner_swiper.slidePrev();});
     $('.banner .rightbtn').click(function(){webData.banner_swiper.slideNext();});
+      showloading(false);
+    }
+    
+    if(!webData.indexData.indexBanner || !webData.indexData.pressPage || !webData.indexData.carsPage) return;
     setTimeout(function(){getFBPOST();},300);    
   }
   function service(){
@@ -554,6 +578,32 @@ $(document).ready(function(){
 			}
 		});
 	}
+  function getDataCollectionIndex(_collectname,_callback){
+		$.ajax({
+			url: 'https://api.mlab.com/api/1/databases/rhinomotor2017/collections/'+_collectname+'?apiKey='+ webData.mlabApikey,
+			type: 'GET',
+			contentType: 'application/json',
+			success: function(data) {
+        // console.log(data);
+				_callback(data,_collectname);				
+			},error: function(xhr, textStatus, errorThrown) {             
+				console.log("error:", xhr, textStatus, errorThrown);
+			}
+		});
+	}
+  // function getDataCollectionLimit(_collectname,_limt,_callback){
+  //   $.ajax({
+	// 		url: 'https://api.mlab.com/api/1/databases/rhinomotor2017/collections/'+_collectname+'?s={"_id":-1}&l='+_limt+'&apiKey='+webData.mlabApikey,
+	// 		type: 'GET',
+	// 		contentType: 'application/json',
+	// 		success: function(data) {
+  //       console.log(data);
+	// 			_collectname(data);
+	// 		},error: function(xhr, textStatus, errorThrown) {             
+	// 			console.log("error:", xhr, textStatus, errorThrown);
+	// 		}
+	// 	});
+  // }
 
 })//ready end 
 function getUrlVars(){
@@ -561,97 +611,3 @@ function getUrlVars(){
   for(var i=0;i<hashes.length;i++){hash=hashes[i].split('=');vars.push(hash[0]);vars[hash[0]]=hash[1]}
   return vars
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
