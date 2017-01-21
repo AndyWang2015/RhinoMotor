@@ -37,7 +37,7 @@ $(document).ready(function(){
     if(e.keyCode == 13)searchcar();
   });
   $('.be_member .sendbtn').click(function(){joinusFC();});
-  $('.footer .send_btn').click(function(){contactFC();});
+  $('.footer .send_btn').click(function(){if(!$(this).hasClass('on')) contactFC();});
   $('.pop .loginbtn').click(function(){member_login();});
   $('.pop .fblogin').click(function(){FBlogin();});
   $('.pop .cover').click(function(){showmemberpop(false)});
@@ -51,14 +51,14 @@ $(document).ready(function(){
   $(window).scroll(window_scroll);
 	$(window).load(window_load);
 	function window_load(){
-		if(webData.wrp.hasClass('press_content')) press_content();
+		if(webData.wrp.hasClass('press_content')) getDataCollection('pressPage',press_content);
+    else if(webData.wrp.hasClass('press_list')) getDataCollection('pressPage',press_list);
     else if(webData.wrp.hasClass('cars_content')) getDataCollection('carsPage',cars_content);
     else if(webData.wrp.hasClass('cars_list')) getDataCollection('carsPage',cars_list);
-    else if(webData.wrp.hasClass('press_list')) press_list();
     else if(webData.wrp.hasClass('service')) service();
     else if(webData.wrp.hasClass('about')) about();
     else if(webData.wrp.hasClass('index')) indexfc();
-    else if(webData.wrp.hasClass('search')) searchfc();
+    else if(webData.wrp.hasClass('search')) getDataCollection('carsPage',searchfc);
 	}
 
 
@@ -72,42 +72,27 @@ $(document).ready(function(){
   }
   function searchcar(){
     if($('.search_text').val()!=''){
-      var _url = 'http://www.rhino-motor.com/Web/index.do?method=search&cht=' + $('.search_text').val();
+      var _url = 'search.html?cht=' + $('.search_text').val();
       window.location.href = _url;
     }else alert('請輸入搜尋資料');
   }
-  function searchfc(){
-    $.ajax({
-        url: 'http://www.rhino-motor.com/Web/product.do?method=productAll',
-        type: 'POST',
-        dataType: 'json',
-        success: function(data) {
-          webData.searchdata = data;
-          console.log(webData.searchdata);
-          aftersearch();
-        },error: function(xhr, textStatus, errorThrown) {
-          showloading(false);
-          console.log("error:", xhr, textStatus, errorThrown);
-        }
-    });
-  }
-  function aftersearch(){
-    console.log(webData.searchdata.cars);
+  function searchfc(data){
     var car_list = $('.wrapper').find('.cars_listin');
-    var _txt = getUrlVars()['cht'];
+    var _txt = decodeURIComponent(getUrlVars()['cht']);
+    console.log(_txt);
     car_list.html('');
     var _true = true;
-    for(var i=0; i<webData.searchdata.cars.length; i++){
-      if(webData.searchdata.cars[i].name.match(_txt)){
-        _true = false;
-        var _img = '/Web/product_DbAction.do?method=showTempImage&tempkey=' + webData.searchdata.cars[i].img.split(',')[0];
-        if(!webData.searchdata.cars[i].url) webData.searchdata.cars[i].url='http://www.rhino-motor.com/Web/index.do?method=index';
-        car_list.append('<div class="n"><a href="'+webData.searchdata.cars[i].url+'"><div class="pic"><img src="'+_img+'"></div><div class="word"><div class="t">'+webData.searchdata.cars[i].name+'</div><div class="price">'+webData.searchdata.cars[i].price+'</div></div></a></div>');
+    for(i in data){
+      for(j in data[i].cars){
+        if(data[i].cars[j].name.match(_txt)){
+          _true = false;
+          $('.cars_listin').prepend('<div class="n"><a href="cars_content.html?brands='+i+'&cid='+j+'"><div class="pic"><img src="'+ data[i].cars[j].carsImg[0] +'"></div><div class="word"><div class="t">'+ data[i].cars[j].name +'</div><div class="price">'+data[i].cars[j].price+'</div><div class="date">'+data[i].cars[j].date+'</div></div></a></div>');
+        }
       }
     }
     if(_true){
       alert('沒有符合的資料。');
-      window.location.href='http://www.rhino-motor.com/Web/index.do?method=carsList';
+      window.location.href='cars_list.html?brands=0';
     }
     showloading(false);
   }
@@ -159,6 +144,8 @@ $(document).ready(function(){
     changememberpop(0);
   }
   function contactFC(){
+    $('.footer .send_btn').addClass('on');
+    showloading(true);
     var o = $('.footer .right');
     var user_data = {
       customername: o.find('.user_name').val(),
@@ -182,19 +169,20 @@ $(document).ready(function(){
       return;
     }
     $.ajax({
-        url: 'http://www.rhino-motor.com/Web/index.do?method=linkus',
-        type: 'POST',
-        dataType: 'json',
-        data:user_data,
-        success: function(data) {
-          console.log(data);
-          if(data.status==0){
-            aftercontact();
-          }else alert(data.status);
-        },error: function(xhr, textStatus, errorThrown) {             
-          console.log("error:", xhr, textStatus, errorThrown);
-        }
-    });
+			url: 'https://api.mlab.com/api/1/databases/rhinomotor2017/collections/emailbox?apiKey='+ webData.mlabApikey,
+			type: 'POST',
+			contentType: 'application/json',
+			data:JSON.stringify(user_data),
+			success: function(data) {				
+				aftercontact();
+				$('.footer .send_btn').removeClass('on');
+				showloading(false);
+			},error: function(xhr, textStatus, errorThrown) {           
+				_o.removeClass('on');
+				showloading(false);
+				console.log("error:", xhr, textStatus, errorThrown);
+			}
+		});
   }
   function aftercontact(){
     var o = $('.footer .right');
@@ -273,6 +261,18 @@ $(document).ready(function(){
     showloading(false);
   }
   function indexfc(){
+    // $.ajax({
+		// 	url: 'https://api.mlab.com/api/1/databases/chinesechess2016/collections/news_page'+_n+'?s={"_id":-1}&l=3&apiKey='+webData.mlabApikey,
+		// 	type: 'GET',
+		// 	contentType: 'application/json',
+		// 	success: function(data) {
+		// 		data.collections = _n;
+		// 		webData.indexNews.push(data);
+		// 		indexcallback();
+		// 	},error: function(xhr, textStatus, errorThrown) {             
+		// 		console.log("error:", xhr, textStatus, errorThrown);
+		// 	}
+		// });
     webData.banner_swiper = new Swiper('.banner_container', {  
           speed:1000,   
           wrapperClass: 'swiper-wrapper',
@@ -297,10 +297,21 @@ $(document).ready(function(){
   function about(){
     showloading(false);
   }
-  function press_list(){
+  function press_list(data){
     webData.nowbrands = getUrlVars()['brands'];
-    if(!webData.nowbrands) webData.nowbrands=1;
-    $('.sec_menuin .menua').eq(webData.nowbrands*1-1).addClass('on');
+    if(!webData.nowbrands) webData.nowbrands=0;
+    
+    // sec_menu
+    $('.sec_menuin .menua').remove();
+    for(i in data) $('.sec_menuin').append('<div class="menua"><a href="press_list.html?brands='+i+'">'+data[i].brands+'</a></div>');
+    $('.sec_menuin .menua').eq(webData.nowbrands*1).addClass('on');
+
+    //press_list
+    $('.press_listin').html('');
+    for(j in data[webData.nowbrands].press){
+      $('.press_listin').prepend('<div class="n"><a href="press_content.html?brands='+webData.nowbrands+'&cid='+j+'"><div class="pic"><img src="'+data[webData.nowbrands].press[j].photo[0]+'"></div><div class="date">'+data[webData.nowbrands].press[j].date+'</div><div class="t">'+data[webData.nowbrands].press[j].title+'</div><div class="w">'+data[webData.nowbrands].press[j].content.substring(0,100)+'</div><div class="more">MORE</div></a></div>');
+    }
+
     showloading(false);
   }
   function cars_list(data){
@@ -343,15 +354,56 @@ $(document).ready(function(){
       }
     }
 
-
     if($('.slide_show').length !=0) $(".slide_show .s_pic_box").mCustomScrollbar({scrollInertia:300,scrollEasing:'linear'});
     if($('.cars_width').length !=0) $(".cars_width .item").mCustomScrollbar({scrollInertia:300,scrollEasing:'linear'});
     if($('.cars_des').length !=0) $(".cars_des .w").mCustomScrollbar({scrollInertia:300,scrollEasing:'linear'});
     if($('.fb_comment_box').length !=0) $(".fb_comment_box").mCustomScrollbar({scrollInertia:300,scrollEasing:'linear'});    
     showloading(false);
   } 	
-	function press_content(){
-		if($('.slide_show').length !=0) $(".slide_show .s_pic_box").mCustomScrollbar({scrollInertia:300,scrollEasing:'linear'});
+	function press_content(data){
+    var cid = getUrlVars()['cid'],
+        brands = getUrlVars()['brands'],
+        o = data[brands].press[cid];
+    $('.main_area .date').html(o.date);
+    $('.main_area .title').html(o.title);
+    $('.main_area .word').html(o.content);
+    $('.press_content .slide_showin .s_pic_box ul').html('');
+    for(i in o.photo) $('.press_content .slide_showin .s_pic_box ul').append('<li><div class="s_pic"><img src="'+o.photo[i]+'"></div></li>');
+    $('.slide_show').each(slide_showfc);
+    if($('.slide_show').length !=0) $(".slide_show .s_pic_box").mCustomScrollbar({scrollInertia:300,scrollEasing:'linear'});
+
+    $('.interested_areain .box').html('');
+    var max = 0;
+    for(k in data){
+      for(m in data[k].press){
+        if(max<4 &&  data[k].press[m].recommend){
+          max+=1;
+          $('.interested_areain .box').append('<div class="n"><a href="press_content.html?brands='+k+'&cid='+m+'"><div class="pic"><img src="'+data[k].press[m].photo[0]+'"></div><div class="date">'+data[k].press[m].date+'</div><div class="t">'+data[k].press[m].title+'</div><div class="w">'+data[k].press[m].content.substring(0,100)+'</div><div class="more">MORE</div></a></div>');
+        }
+      }
+    }
+    //next
+    var nextCid = cid*1+1,
+        nextBrands = brands;
+    if( data[getUrlVars()['brands']].press.length*1-1 <  nextCid){
+      nextCid=0;
+      nextBrands = brands*1+1;
+      if(data.length*1-1 < nextBrands){
+        nextBrands=0;
+      }
+    }
+    $('.main_area .btn_bottom .next a').attr('href','press_content.html?brands='+nextBrands+'&cid='+nextCid);
+
+    //prev
+    var prevCid = cid*1-1,
+        prevBrands = brands;
+    if( prevCid <  0){
+      prevBrands = brands*1-1;
+      if(prevBrands<0) prevBrands = data.length*1-1;
+      prevCid = data[prevBrands].press.length*1-1;
+    }
+    $('.main_area .btn_bottom .prev a').attr('href','press_content.html?brands='+prevBrands+'&cid='+prevCid);
+		
     showloading(false);
 	}
 	function slide_showfc(){
@@ -495,7 +547,7 @@ $(document).ready(function(){
 			type: 'GET',
 			contentType: 'application/json',
 			success: function(data) {
-        console.log(data);
+        // console.log(data);
 				_callback(data);				
 			},error: function(xhr, textStatus, errorThrown) {             
 				console.log("error:", xhr, textStatus, errorThrown);

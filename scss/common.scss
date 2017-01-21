@@ -108,7 +108,7 @@ body{
 .loading{
 	@include f;
 	z-index: 9999;
-	background-color: rgba(0,0,0,0.7);	
+	background-color: rgba(0,0,0,1);	
 	.main{
 		@include a(250px,100px,50%,50%);
 		@include transform(translate(-50%,-50%));
@@ -514,7 +514,7 @@ body{
 					margin: auto;
 					.title{
 						@include r;
-						@include font(18px,24px,#87bace,normal,'Arial');
+						@include font(18px,24px,#87bace,normal);
 						text-align: center;
 						margin-bottom: 50px;
 					}
@@ -535,32 +535,24 @@ body{
 								&:hover{
 									.pic{
 										img{
-											@include transform(scale(1));
+											@include transform(scale(1) translate(-50%,0));
 											opacity: 1;
 										}										
 									}
 								}
 								.pic{
-									@include r(100%,0);
+									@include r(100%,228px);
 									margin-bottom: 25px;
 									background-color: #000;
 									box-sizing:border-box;
-									padding-bottom: 60%;
-									overflow: hidden;									
-									&:before{
-										content:"";
-										width: 0.1%;
-										height: 100%;
-										display: inline-block;
-										vertical-align: middle;
-									}
+									overflow: hidden;
 									img{
-										width: 99.9%;
-										height: auto;
-										display: inline-block;
-										vertical-align: middle;
+										position: absolute;
+										width: auto;
+										height: 100%;
+										left: 50%;
 										transition:0.3s;
-										@include transform(scale(1.1));
+										@include transform(scale(1.1) translate(-50%,0));
 										opacity: 0.5;
 									}
 								}
@@ -1050,32 +1042,24 @@ body{
 						&:hover{
 							.pic{
 								img{
-									@include transform(scale(1));
+									@include transform(scale(1) translate(-50%,0));
 									opacity: 1;
 								}										
 							}
 						}
 						.pic{
-							@include r(100%,0);
+							@include r(100%,228px);
 							margin-bottom: 25px;
 							background-color: #000;
 							box-sizing:border-box;
-							padding-bottom: 60%;
-							overflow: hidden;									
-							&:before{
-								content:"";
-								width: 0.1%;
-								height: 100%;
-								display: inline-block;
-								vertical-align: middle;
-							}
+							overflow: hidden;
 							img{
-								width: 99.9%;
-								height: auto;
-								display: inline-block;
-								vertical-align: middle;
+								position: absolute;
+								width: auto;
+								height: 100%;
+								left: 50%;
 								transition:0.3s;
-								@include transform(scale(1.1));
+								@include transform(scale(1.1) translate(-50%,0));
 								opacity: 0.5;
 							}
 						}
@@ -1092,14 +1076,16 @@ body{
 							}
 						}
 						.t{
-							@include r;
+							@include r(100%,56px);
 							@include font(22px,28px,#87bace,bolder);
 							margin-bottom: 23px;
+							overflow: hidden;
 						}
 						.w{
-							@include r;
+							@include r(100%,96px);
 							@include font(13px,24px,#ffffff);
 							margin-bottom: 35px;
+							overflow: hidden;
 						}
 						.more{
 							@include r(150px,30px);
@@ -1796,7 +1782,7 @@ body{
 		@include border-radius(5px);
 		right: 25px;
 		bottom: 110px;
-		z-index: 9999;
+		z-index: 9998;
 		cursor: pointer;
 		background-color: #FFF;
 		&:before{
