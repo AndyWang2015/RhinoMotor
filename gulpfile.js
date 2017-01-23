@@ -31,7 +31,7 @@ gulp.task('js',function(){
 gulp.task('connect', function() {
   $.connect.server({
   	// root: 'D:/yihsien/case/20160520_RhinoMotor/RhinoMotor/andy/',
-  	root: 'D:/yihsien/201605/20160520_RhinoMotor/RhinoMotor/andy/',
+  	root: './andy/',
   	livereload: true
   });
 });

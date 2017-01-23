@@ -567,7 +567,7 @@ $(document).ready(function(){
   }
   function getDataCollection(_collectname,_callback){
 		$.ajax({
-			url: 'https://api.mlab.com/api/1/databases/rhinomotor2017/collections/'+_collectname+'?apiKey='+ webData.mlabApikey,
+			url: 'https://api.mlab.com/api/1/databases/rhinomotor2017/collections/'+_collectname+'?s={"_id":1}&apiKey='+ webData.mlabApikey,
 			type: 'GET',
 			contentType: 'application/json',
 			success: function(data) {
@@ -580,7 +580,7 @@ $(document).ready(function(){
 	}
   function getDataCollectionIndex(_collectname,_callback){
 		$.ajax({
-			url: 'https://api.mlab.com/api/1/databases/rhinomotor2017/collections/'+_collectname+'?apiKey='+ webData.mlabApikey,
+			url: 'https://api.mlab.com/api/1/databases/rhinomotor2017/collections/'+_collectname+'?s={"_id":1}&apiKey='+ webData.mlabApikey,
 			type: 'GET',
 			contentType: 'application/json',
 			success: function(data) {
