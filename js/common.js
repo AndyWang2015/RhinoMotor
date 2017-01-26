@@ -162,16 +162,22 @@ $(document).ready(function(){
     };
     if(!user_data.customername || !user_data.customertel || !user_data.customeremail || !user_data.customeraddress || !user_data.customercontent){
       alert('還有未填寫的資料。');
+      $('.footer .send_btn').removeClass('on');
+      showloading(false);
       return;
     }
     var pattern = /^(0\d+)(\d{8})/;
     if (!pattern.test(user_data.customertel) || user_data.customertel.length!=10) {
       alert('電話格式不正確，請填入手機號碼，例如：09xx 123 456，共10碼。');
+      $('.footer .send_btn').removeClass('on');
+      showloading(false);
       return;
     }
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if(!re.test(user_data.customeremail)){
       alert('E-mail格式不正確');
+      $('.footer .send_btn').removeClass('on');
+      showloading(false);
       return;
     }
     $.ajax({
