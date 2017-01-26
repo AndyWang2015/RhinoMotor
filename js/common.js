@@ -157,7 +157,8 @@ $(document).ready(function(){
       customertel: o.find('.user_phone').val(),
       customeremail: o.find('.user_mail').val(),
       customeraddress: o.find('.user_addr').val(),
-      customercontent: $('.footer .message').val()
+      customercontent: $('.footer .message').val(),
+      date:new Date().toDateString()
     };
     if(!user_data.customername || !user_data.customertel || !user_data.customeremail || !user_data.customeraddress || !user_data.customercontent){
       alert('還有未填寫的資料。');
