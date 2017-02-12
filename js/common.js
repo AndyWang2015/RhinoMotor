@@ -3,7 +3,8 @@ $(document).ready(function(){
 	webData.wrp=$('.wrapper');
   webData.mlabApikey = "n6FXodWWCdM14KrePZHrRPPovbzboRn6";
   //member
-  $('body').append('<div class="pop"><div class="popin"><div class="closebtn"></div><div class="pages_all"><div class="pages be_member"><div class="title">加入會員</div><input type="text" class="name" placeholder="Name"><input type="text" class="mail" placeholder="E-MAIL"><input type="text" class="password" placeholder="Password"><input type="text" class="password_again" placeholder="Password again"><div class="btn"><a href="javascript:;" class="sendbtn">加入</a><a href="javascript:;" class="cancelbtn">取消</a></div></div><div class="pages login"><div class="title">會員登入</div><input type="text" class="mail" placeholder="E-MAIL"><input type="text" class="password" placeholder="Password"><div class="btn"><div class="fblogin"></div><a href="javascript:;" class="loginbtn">登入</a><a href="javascript:;" class="registbtn">註冊</a></div></div></div></div><div class="cover"></div></div>');
+  $('body').append('<div class="pop"><div class="popin"><div class="closebtn"></div><div class="pages_all"><div class="pages be_member"><div class="title">加入會員</div><input type="text" class="name" placeholder="Name"><input type="text" class="mail" placeholder="E-MAIL"><input type="password" class="password" placeholder="Password"><input type="password" class="password_again" placeholder="Password again"><div class="btn"><a href="javascript:;" class="sendbtn">加入</a><a href="javascript:;" class="cancelbtn">取消</a></div></div><div class="pages login"><div class="title">會員登入</div><input type="text" class="mail" placeholder="E-MAIL"><input type="password" class="password" placeholder="Password"><div class="btn"><div class="fblogin"></div><a href="javascript:;" class="loginbtn">登入</a><a href="javascript:;" class="registbtn">註冊</a></div></div></div></div><div class="cover"></div></div>');
+  webData.memberData = '';
 
 	//Init
   webData.bottomDis = $(window).height() / 10;
@@ -36,9 +37,15 @@ $(document).ready(function(){
   $('.search_text').on('keydown',function(e){
     if(e.keyCode == 13)searchcar();
   });
-  $('.be_member .sendbtn').click(function(){joinusFC();});
+  $('.be_member .sendbtn').click(function(){
+    showloading(true);
+    getDataCollection('memberData',joinusFC);
+  });
   $('.footer .send_btn').click(function(){if(!$(this).hasClass('on')) contactFC();});
-  $('.pop .loginbtn').click(function(){member_login();});
+  $('.pop .loginbtn').click(function(){
+    showloading(true);
+    getDataCollection('memberData',member_login);
+  });
   $('.pop .fblogin').click(function(){FBlogin();});
   $('.pop .cover').click(function(){showmemberpop(false)});
   $('.pop .closebtn').click(function(){showmemberpop(false)});
@@ -101,43 +108,51 @@ $(document).ready(function(){
     }
     showloading(false);
   }
-  function joinusFC(){
+  function joinusFC(data){
+    if(data) webData.memberData = data;
     var o = $('.pop .be_member');
     var user_data = {
-      name: o.find('.name').val(),
-      email: o.find('.mail').val(),
-      userpwd: o.find('.password').val(),
+      username: o.find('.name').val(),
+      useremail: o.find('.mail').val(),
+      userpassword: o.find('.password').val(),
       userpwdagain: o.find('.password_again').val()
     };
-    if(!user_data.name || !user_data.email || !user_data.userpwd || !user_data.userpwdagain){
+    if(!user_data.username || !user_data.useremail || !user_data.userpassword || !user_data.userpwdagain){
       alert('還有未填寫的資料。');
+      showloading(false);
       return;
     }
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if(!re.test(user_data.email)){
+    if(!re.test(user_data.useremail)){
       alert('E-mail格式不正確');
+      showloading(false);
       return;
     }
-    if(user_data.userpwd != user_data.userpwdagain){
+    if(user_data.userpassword != user_data.userpwdagain){
       alert('密碼前後不一致，請重新輸入');
       o.find('.password').val('');
       o.find('.password_again').val('');
+      showloading(false);
+      return;
+    }
+    if(checkMemberID(user_data.useremail)){
+      alert("此EMAIL已註冊過");
+      showloading(false);
       return;
     }
     $.ajax({
-        url: 'http://www.rhino-motor.com/Web/index.do?method=joinus',
-        type: 'POST',
-        dataType: 'json',
-        data:user_data,
-        success: function(data) {
-          console.log(data);
-          if(data.status==0){
-            afterjoinus();
-          }else alert(data.status);
-        },error: function(xhr, textStatus, errorThrown) {             
-          console.log("error:", xhr, textStatus, errorThrown);
-        }
-    });
+			url: 'https://api.mlab.com/api/1/databases/rhinomotor2017/collections/memberData?apiKey='+ webData.mlabApikey,
+			type: 'POST',
+			contentType: 'application/json',
+			data:JSON.stringify(user_data),
+			success: function(data) {				
+				afterjoinus();
+				showloading(false);
+			},error: function(xhr, textStatus, errorThrown) {
+				showloading(false);
+				console.log("error:", xhr, textStatus, errorThrown);
+			}
+		});
   }
   function afterjoinus(){
     var o = $('.pop .be_member');
@@ -147,6 +162,13 @@ $(document).ready(function(){
     o.find('.password_again').val('');
     alert('註冊成功');
     changememberpop(0);
+  }
+  function checkMemberID(_o){
+    var _t = false;
+    for(i in webData.memberData){
+      if(webData.memberData[i].useremail == _o) _t=true;
+    }
+    return _t;
   }
   function contactFC(){
     $('.footer .send_btn').addClass('on');
@@ -205,6 +227,22 @@ $(document).ready(function(){
     $('.footer .message').val('');
     alert('送出成功');
   }
+  function member_login(data){
+    if(data) webData.memberData = data;
+    //check data
+    var o = $('.pop .login');
+    var user_data = {
+      useremail: o.find('.mail').val(),
+      userpassword: o.find('.password').val()
+    };
+    if(!user_data.useremail || !user_data.userpassword){
+      alert('還有未填寫的資料。');
+      showloading(false);
+      return;
+    }
+    if(checkMember(user_data)) afterLogin();
+    showloading(false);
+  }
   function afterLogin(){
     if(FBdata.user_name) alert(FBdata.user_name + '登入成功');
     else alert('登入成功');
@@ -212,31 +250,20 @@ $(document).ready(function(){
     $('.pop .login').find('.mail').val('');
     $('.pop .login').find('.password').val('');
   }
-  function member_login(){
-    //check data
-    var o = $('.pop .login');
-    var user_data = {
-      email: o.find('.mail').val(),
-      userpwd: o.find('.password').val()
-    };
-    if(!user_data.email || !user_data.userpwd){
-      alert('還有未填寫的資料。');
-      return;
+  function checkMember(_o){
+    var _t = false,_id = false;
+    for(i in webData.memberData){
+      if(webData.memberData[i].useremail == _o.useremail){
+        _id = true;
+        if(webData.memberData[i].userpassword == _o.userpassword) _t=true;
+        else alert('密碼錯誤');
+      } 
     }
-    $.ajax({
-        url: 'http://www.rhino-motor.com/Web/index.do?method=joinus',
-        type: 'POST',
-        dataType: 'json',
-        data:user_data,
-        success: function(data) {
-          console.log(data);
-          if(data.status==0){
-            afterLogin();
-          }else alert(data.status);
-        },error: function(xhr, textStatus, errorThrown) {             
-          console.log("error:", xhr, textStatus, errorThrown);
-        }
-    });
+    if(!_id){
+      alert('此EMAIL尚未註冊，請先註冊會員。');
+      changememberpop(1);
+    }
+    return _t;
   }
   function changememberpop(_n){
     if(_n == 0) $('.pop .popin').removeClass('on');
@@ -534,8 +561,8 @@ $(document).ready(function(){
         FBdata.user_id=response.id;
         FBdata.user_name = response.name;
         FB.api('/me?fields=email', function (response){
-        FBdata.user_email = response.email;
-        AfterFBLogin();
+          FBdata.user_email = response.email;
+          getDataCollection('memberData',AfterFBLogin);
         });
       });
   }
@@ -546,31 +573,34 @@ $(document).ready(function(){
   }
 
   //登入FB以及抓取資料後的執行事件
-  function AfterFBLogin(){    
+  function AfterFBLogin(data){    
+    if(data) webData.memberData = data;
     console.log('使用者ID:'+FBdata.user_id);
     console.log('使用者名字:'+FBdata.user_name);
     console.log('FB 使用者信箱:'+FBdata.user_email);
 
     var user_data = {
-      email: FBdata.user_email,
-      userpwd: FBdata.user_id,
-      name: FBdata.user_name
+      useremail: FBdata.user_email,
+      userpassword: FBdata.user_id,
+      username: FBdata.user_name
     };
 
-    $.ajax({
-        url: 'http://www.rhino-motor.com/Web/index.do?method=fblogin',
+    if(checkMemberID(user_data.useremail)) afterLogin();
+    else{
+      $.ajax({
+        url: 'https://api.mlab.com/api/1/databases/rhinomotor2017/collections/memberData?apiKey='+ webData.mlabApikey,
         type: 'POST',
-        dataType: 'json',
-        data:user_data,
-        success: function(data) {
-          console.log(data);
-          if(data.status==0){
-            afterLogin();
-          }else alert(data.status);
-        },error: function(xhr, textStatus, errorThrown) {             
+        contentType: 'application/json',
+        data:JSON.stringify(user_data),
+        success: function(data) {				
+          afterLogin();
+          showloading(false);
+        },error: function(xhr, textStatus, errorThrown) {
+          showloading(false);
           console.log("error:", xhr, textStatus, errorThrown);
         }
-    });
+      });
+    }
   }
   function getDataCollection(_collectname,_callback){
 		$.ajax({
@@ -578,7 +608,6 @@ $(document).ready(function(){
 			type: 'GET',
 			contentType: 'application/json',
 			success: function(data) {
-        // console.log(data);
 				_callback(data);				
 			},error: function(xhr, textStatus, errorThrown) {             
 				console.log("error:", xhr, textStatus, errorThrown);
@@ -591,7 +620,6 @@ $(document).ready(function(){
 			type: 'GET',
 			contentType: 'application/json',
 			success: function(data) {
-        // console.log(data);
 				_callback(data,_collectname);				
 			},error: function(xhr, textStatus, errorThrown) {             
 				console.log("error:", xhr, textStatus, errorThrown);
