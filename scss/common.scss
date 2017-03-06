@@ -145,6 +145,7 @@ body{
 	border-top:8px solid #000;
 	z-index: 99;
 	background-color: #FFF;
+	min-width: 1200px;
 	.topin{
 		position: relative;
 		width: 100%;
@@ -226,6 +227,7 @@ body{
 				}				
 			}
 			&.member_btn{
+				width: 95px;
 				@include font(15px,28px,#000000);
 				background: url(../images/icon_member.png) no-repeat;
 				background-position: left center;
@@ -332,6 +334,7 @@ body{
 		@include f(100%,60px,0,96px);
 		background-color: rgba(0,0,0,0.75);
 		z-index: 99;		
+		min-width: 1200px;
 		.sec_menuin{
 			width: 100%;
 			height: 60px;
@@ -2007,6 +2010,14 @@ body{
 	}
 }
 @media screen and (max-width: 1024px) {
+	.top{
+		position: absolute;
+	}
+	.wrapper{
+		.sec_menu{
+			position: absolute;
+		}
+	}
 	.footer{
 		@include r;
 		margin-top: 100px;
@@ -2106,6 +2117,4 @@ body{
 			}
 		}		
 	}
-}
-@media screen and (max-width: 640px) {
 }
