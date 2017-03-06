@@ -3,6 +3,7 @@ $page_maxwidth:1550px;
 $page_maxwidth_in:990px;
 body{
 	background-color:#000000;
+	min-width: 1200px;
 }
 .pop{
 	@include f;
