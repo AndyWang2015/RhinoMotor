@@ -13,6 +13,7 @@ $(document).ready(function(){
   var mainurl = window.location.href; //活動網址
   var backurl = mainurl+'?fbback=1'; //手機登入轉址回來的網址
   var permissionsword = "你必須同意授權"; //授權不足&不同意授權時 文案
+  var noDataText = "目前暫無資料，敬請期待，謝謝。";
 
   //初始化FB APP
   FB.init({
@@ -365,6 +366,12 @@ $(document).ready(function(){
     $('.sec_menuin .menua').eq(webData.nowbrands*1).addClass('on');
 
     //press_list
+    try{data[webData.nowbrands].press}
+    catch(err){
+      alert(noDataText);
+      window.location.href="/";
+      return;
+    }
     $('.press_listin').html('');
     for(j in data[webData.nowbrands].press){
       $('.press_listin').prepend('<div class="n"><a href="press_content.html?brands='+webData.nowbrands+'&cid='+j+'"><div class="pic"><img src="'+data[webData.nowbrands].press[j].photo[0]+'"></div><div class="date">'+data[webData.nowbrands].press[j].date+'</div><div class="t">'+data[webData.nowbrands].press[j].title+'</div><div class="w">'+data[webData.nowbrands].press[j].content.substring(0,100)+'</div><div class="more">MORE</div></a></div>');
@@ -383,6 +390,12 @@ $(document).ready(function(){
     
     //cars_list
     $('.cars_listin').html('');
+    try{data[webData.nowbrands].cars}
+    catch(err){
+      alert(noDataText);
+      window.location.href="/";
+      return;
+    }
     for(j in data[webData.nowbrands].cars){
       $('.cars_listin').prepend('<div class="n"><a href="cars_content.html?brands='+webData.nowbrands+'&cid='+j+'"><div class="pic"><img src="'+ data[webData.nowbrands].cars[j].carsImg[0] +'"></div><div class="word"><div class="t">'+ data[webData.nowbrands].cars[j].name +'</div><div class="price">'+data[webData.nowbrands].cars[j].price+'</div><div class="date">'+data[webData.nowbrands].cars[j].date+'</div></div></a></div>');
     }
